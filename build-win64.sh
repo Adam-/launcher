@@ -20,12 +20,6 @@ if ! [ -d win64-jdk ] ; then
     mv jdk-11.0.4+11-jre win64-jdk/jre
 fi
 
-if ! [ -f packr.jar ] ; then
-    curl -Lo packr.jar https://libgdx.badlogicgames.com/ci/packr/packr.jar
-fi
-
-echo "5825a18196a813158e247351e0b43a10c521bf227c931f41e536e61b085f2b80 packr.jar" | sha256sum -c
-
 java -jar packr.jar \
     --platform \
     windows64 \

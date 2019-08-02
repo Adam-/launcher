@@ -25,12 +25,6 @@ pushd osx-jdk/jre
 cp -r Contents/Home/* .
 popd
 
-if ! [ -f packr.jar ] ; then
-    curl -Lo packr.jar https://libgdx.badlogicgames.com/ci/packr/packr.jar
-fi
-
-echo "5825a18196a813158e247351e0b43a10c521bf227c931f41e536e61b085f2b80 packr.jar" | sha256sum -c
-
 java -jar packr.jar \
     --platform \
     mac \
