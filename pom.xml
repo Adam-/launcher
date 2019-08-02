@@ -36,8 +36,6 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<logback.version>1.2.3</logback.version>
-
 		<main.class>net.runelite.launcher.Launcher</main.class>
 	</properties>
 
@@ -122,7 +120,7 @@
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-parent</artifactId>
-				<version>${logback.version}</version>
+				<version>1.2.3</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
