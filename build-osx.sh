@@ -53,6 +53,8 @@ java -jar packr.jar \
     --output \
     native-osx/RuneLite.app
 
+cp target/filtered-resources/Info.plist native-osx/RuneLite.app/Contents
+
 echo Setting world execute permissions on RuneLite
 pushd native-osx/RuneLite.app
 chmod g+x,o+x Contents/MacOS/RuneLite

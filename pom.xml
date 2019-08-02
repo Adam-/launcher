@@ -593,6 +593,13 @@
 										<exclude>*.bmp</exclude>
 									</excludes>
 								</resource>
+								<resource>
+									<directory>packr</directory>
+									<filtering>true</filtering>
+									<includes>
+										<include>*.plist</include>
+									</includes>
+								</resource>
 							</resources>
 						</configuration>
 					</execution>
