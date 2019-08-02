@@ -20,6 +20,11 @@ if ! [ -d osx-jdk ] ; then
     mv jdk-11.0.4+11-jre osx-jdk/jre
 fi
 
+# Move JRE out of Contents/Home/
+pushd osx-jdk/jre
+cp -r Contents/Home/* .
+popd
+
 if ! [ -f packr.jar ] ; then
     curl -Lo packr.jar https://libgdx.badlogicgames.com/ci/packr/packr.jar
 fi
