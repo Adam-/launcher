@@ -55,7 +55,13 @@ resourcehacker \
     -res runelite.ico \
     -mask ICONGROUP,MAINICON,
 
-# XXX here we update the manifest for DPI scaling - is that required still?
+# update manifest to remove dpi awareness so the system can do ui scaling
+resourcehacker \
+    -open native-win64/RuneLite.exe \
+    -save native-win64/RuneLite.exe \
+    -action addoverwrite \
+    -res packr/runelite.manifest \
+    -mask MANIFEST,1,
 
 # We use the filtered iss file
 iscc target/filtered-resources/runelite.iss
