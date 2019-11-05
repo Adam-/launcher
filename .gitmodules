@@ -1,3 +1,6 @@
+[submodule "packr/packr"]
+	path = packr/packr
+	url = https://github.com/libgdx/packr
 [submodule "archive-patcher"]
 	path = archive-patcher
 	url = git://github.com/google/archive-patcher
