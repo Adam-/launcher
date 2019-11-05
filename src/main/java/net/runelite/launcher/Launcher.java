@@ -455,7 +455,7 @@ public class Launcher
 					totalDownloaded += diff.getSize();
 					File old = new File(REPO_DIR, diff.getFrom());
 					try (InputStream patchStream = new GZIPInputStream(new ByteArrayInputStream(patch));
-						 FileOutputStream fout = new FileOutputStream(dest))
+						FileOutputStream fout = new FileOutputStream(dest))
 					{
 						new FileByFileV1DeltaApplier().applyDelta(old, patchStream, fout);
 					}
