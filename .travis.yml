@@ -3,6 +3,9 @@ sudo: false
 jdk:
 - openjdk11
 install: true
+before_script:
+  - cd archive-patcher
+  - gradle publishToMavenLocal
 script: mvn install -B
 notifications:
   irc:
