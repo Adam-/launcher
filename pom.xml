@@ -110,6 +110,13 @@
 			<groupId>com.google</groupId>
 			<artifactId>archivepatcher</artifactId>
 			<version>1.0</version>
+			<exclusions>
+				<!-- Gradle publishToMavenLocal adds this with version "undefined" but it doesn't seem required -->
+				<exclusion>
+					<groupId>archive-patcher</groupId>
+					<artifactId>tools</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
