@@ -45,6 +45,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -459,30 +460,31 @@ public class Launcher
 					{
 						new FileByFileV1DeltaApplier().applyDelta(old, patchStream, fout);
 					}
+
+					continue;
 				}
-				catch (VerificationException e)
+				catch (IOException | VerificationException e)
 				{
 					log.warn("unable to verify patch for {}", diff.getName(), e);
+					// Fall through and try downloading the full artifact
 				}
 			}
-			else
-			{
-				log.debug("Downloading {}", artifact.getName());
 
-				try
+			log.debug("Downloading {}", artifact.getName());
+
+			try
+			{
+				final byte[] jar = download(artifact.getPath(), artifact.getHash(), (completed) ->
+					SplashScreen.stage(START_PROGRESS, .80, null, artifact.getName(), total + completed, totalBytes, true));
+				totalDownloaded += artifact.getSize();
+				try (FileOutputStream fout = new FileOutputStream(dest))
 				{
-					final byte[] jar = download(artifact.getPath(), artifact.getHash(), (completed) ->
-						SplashScreen.stage(START_PROGRESS, .80, null, artifact.getName(), total + completed, totalBytes, true));
-					totalDownloaded += artifact.getSize();
-					try (FileOutputStream fout = new FileOutputStream(dest))
-					{
-						fout.write(jar);
-					}
+					fout.write(jar);
 				}
-				catch (VerificationException e)
-				{
-					log.warn("unable to verify jar {}", artifact.getName(), e);
-				}
+			}
+			catch (VerificationException e)
+			{
+				log.warn("unable to verify jar {}", artifact.getName(), e);
 			}
 		}
 	}
@@ -617,12 +619,22 @@ public class Launcher
 
 	private static byte[] download(String path, String hash, IntConsumer progress) throws IOException, VerificationException
 	{
-		URL url = new URL(path);
-		URLConnection conn = url.openConnection();
-		conn.setRequestProperty("User-Agent", USER_AGENT);
 		HashFunction hashFunction = Hashing.sha256();
 		Hasher hasher = hashFunction.newHasher();
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+		URL url = new URL(path);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setRequestProperty("User-Agent", USER_AGENT);
+		conn.getResponseCode();
+
+		InputStream err = conn.getErrorStream();
+		if (err != null)
+		{
+			err.close();
+			throw new IOException("Unable to download " + path + " - " + conn.getResponseMessage());
+		}
+
 		int downloaded = 0;
 		try (InputStream in = conn.getInputStream())
 		{
