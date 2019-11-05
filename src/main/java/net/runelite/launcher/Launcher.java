@@ -435,7 +435,6 @@ public class Launcher
 
 		final double START_PROGRESS = .15;
 		int totalDownloaded = 0;
-		final int totalBytes = totalDownloadBytes;
 		SplashScreen.stage(START_PROGRESS, "Downloading", "");
 
 		for (Artifact artifact : toDownload)
@@ -451,6 +450,7 @@ public class Launcher
 
 				try
 				{
+					final int totalBytes = totalDownloadBytes;
 					final byte[] patch = download(diff.getPath(), diff.getHash(), (completed) ->
 						SplashScreen.stage(START_PROGRESS, .80, null, diff.getName(), total + completed, totalBytes, true));
 					totalDownloaded += diff.getSize();
@@ -467,6 +467,10 @@ public class Launcher
 				{
 					log.warn("unable to download patch for {}", diff.getName(), e);
 					// Fall through and try downloading the full artifact
+
+					// Adjust the download size for the difference
+					totalDownloadBytes -= diff.getSize();
+					totalDownloadBytes += artifact.getSize();
 				}
 			}
 
@@ -474,6 +478,7 @@ public class Launcher
 
 			try
 			{
+				final int totalBytes = totalDownloadBytes;
 				final byte[] jar = download(artifact.getPath(), artifact.getHash(), (completed) ->
 					SplashScreen.stage(START_PROGRESS, .80, null, artifact.getName(), total + completed, totalBytes, true));
 				totalDownloaded += artifact.getSize();
