@@ -447,7 +447,7 @@ public class Launcher
 			Diff diff = diffs.get(artifact);
 			if (diff != null)
 			{
-				log.debug("Downloading diff {}", diff.getName());
+				log.debug("Downloading {}", diff.getName());
 
 				try
 				{
@@ -465,7 +465,7 @@ public class Launcher
 				}
 				catch (IOException | VerificationException e)
 				{
-					log.warn("unable to verify patch for {}", diff.getName(), e);
+					log.warn("unable to download patch for {}", diff.getName(), e);
 					// Fall through and try downloading the full artifact
 				}
 			}
