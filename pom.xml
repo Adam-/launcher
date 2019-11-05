@@ -106,6 +106,11 @@
 			<version>1.16.22</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.google</groupId>
+			<artifactId>archivepatcher</artifactId>
+			<version>1.0</version>
+		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>
