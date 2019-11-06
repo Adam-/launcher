@@ -465,7 +465,7 @@ public class Launcher
 				}
 				catch (IOException | VerificationException e)
 				{
-					log.warn("unable to download patch for {}", diff.getName(), e);
+					log.warn("unable to download patch {}", diff.getName(), e);
 					// Fall through and try downloading the full artifact
 
 					// Adjust the download size for the difference
