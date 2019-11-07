@@ -446,7 +446,7 @@ public class Launcher
 			Diff diff = diffs.get(artifact);
 			if (diff != null)
 			{
-				log.debug("Downloading {}", diff.getName());
+				log.debug("Downloading diff {}", diff.getName());
 
 				try
 				{
