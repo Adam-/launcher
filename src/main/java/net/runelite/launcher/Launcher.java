@@ -434,13 +434,13 @@ public class Launcher
 		}
 
 		final double START_PROGRESS = .15;
-		int totalDownloaded = 0;
+		int downloaded = 0;
 		SplashScreen.stage(START_PROGRESS, "Downloading", "");
 
 		for (Artifact artifact : toDownload)
 		{
 			File dest = new File(REPO_DIR, artifact.getName());
-			final int total = totalDownloaded;
+			final int total = downloaded;
 
 			// Check if there is a diff we can download instead
 			Diff diff = diffs.get(artifact);
@@ -453,7 +453,7 @@ public class Launcher
 					final int totalBytes = totalDownloadBytes;
 					final byte[] patch = download(diff.getPath(), diff.getHash(), (completed) ->
 						SplashScreen.stage(START_PROGRESS, .80, null, diff.getName(), total + completed, totalBytes, true));
-					totalDownloaded += diff.getSize();
+					downloaded += diff.getSize();
 					File old = new File(REPO_DIR, diff.getFrom());
 					try (InputStream patchStream = new GZIPInputStream(new ByteArrayInputStream(patch));
 						FileOutputStream fout = new FileOutputStream(dest))
@@ -481,7 +481,7 @@ public class Launcher
 				final int totalBytes = totalDownloadBytes;
 				final byte[] jar = download(artifact.getPath(), artifact.getHash(), (completed) ->
 					SplashScreen.stage(START_PROGRESS, .80, null, artifact.getName(), total + completed, totalBytes, true));
-				totalDownloaded += artifact.getSize();
+				downloaded += artifact.getSize();
 				try (FileOutputStream fout = new FileOutputStream(dest))
 				{
 					fout.write(jar);
