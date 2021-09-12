@@ -39,13 +39,14 @@ import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -542,12 +543,18 @@ public class Launcher
 
 				try
 				{
-					final int totalBytes = totalDownloadBytes;
-					final byte[] patch = download(diff.getPath(), diff.getHash(), (completed) ->
-						SplashScreen.stage(START_PROGRESS, .80, null, diff.getName(), total + completed, totalBytes, true));
-					downloaded += diff.getSize();
+					File tempDiff = File.createTempFile("runelite_diff", null);
+					try (FileOutputStream tempOut = new FileOutputStream(tempDiff))
+					{
+						final int totalBytes = totalDownloadBytes;
+						download(diff.getPath(), diff.getHash(), (completed) ->
+							SplashScreen.stage(START_PROGRESS, .80, null, diff.getName(), total + completed, totalBytes, true),
+							tempOut);
+						downloaded += diff.getSize();
+					}
+
 					File old = new File(REPO_DIR, diff.getFrom());
-					try (InputStream patchStream = new GZIPInputStream(new ByteArrayInputStream(patch));
+					try (InputStream patchStream = new GZIPInputStream(new FileInputStream(tempDiff));
 						FileOutputStream fout = new FileOutputStream(dest))
 					{
 						new FileByFileV1DeltaApplier().applyDelta(old, patchStream, fout);
@@ -568,16 +575,13 @@ public class Launcher
 
 			log.debug("Downloading {}", artifact.getName());
 
-			try
+			try (FileOutputStream fout = new FileOutputStream(dest))
 			{
 				final int totalBytes = totalDownloadBytes;
-				final byte[] jar = download(artifact.getPath(), artifact.getHash(), (completed) ->
-					SplashScreen.stage(START_PROGRESS, .80, null, artifact.getName(), total + completed, totalBytes, true));
+				download(artifact.getPath(), artifact.getHash(), (completed) ->
+					SplashScreen.stage(START_PROGRESS, .80, null, artifact.getName(), total + completed, totalBytes, true),
+					fout);
 				downloaded += artifact.getSize();
-				try (FileOutputStream fout = new FileOutputStream(dest))
-				{
-					fout.write(jar);
-				}
 			}
 			catch (VerificationException e)
 			{
@@ -714,12 +718,8 @@ public class Launcher
 		});
 	}
 
-	private static byte[] download(String path, String hash, IntConsumer progress) throws IOException, VerificationException
+	private static void download(String path, String hash, IntConsumer progress, OutputStream out) throws IOException, VerificationException
 	{
-		HashFunction hashFunction = Hashing.sha256();
-		Hasher hasher = hashFunction.newHasher();
-		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
 		URL url = new URL(path);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestProperty("User-Agent", USER_AGENT);
@@ -732,6 +732,8 @@ public class Launcher
 			throw new IOException("Unable to download " + path + " - " + conn.getResponseMessage());
 		}
 
+		HashFunction hashFunction = Hashing.sha256();
+		Hasher hasher = hashFunction.newHasher();
 		int downloaded = 0;
 		try (InputStream in = conn.getInputStream())
 		{
@@ -739,7 +741,7 @@ public class Launcher
 			byte[] buffer = new byte[1024 * 1024];
 			while ((i = in.read(buffer)) != -1)
 			{
-				byteArrayOutputStream.write(buffer, 0, i);
+				out.write(buffer, 0, i);
 				hasher.putBytes(buffer, 0, i);
 				downloaded += i;
 				progress.accept(downloaded);
@@ -751,8 +753,6 @@ public class Launcher
 		{
 			throw new VerificationException("Unable to verify resource " + path + " - expected " + hash + " got " + hashCode.toString());
 		}
-
-		return byteArrayOutputStream.toByteArray();
 	}
 
 	static boolean isJava17()
