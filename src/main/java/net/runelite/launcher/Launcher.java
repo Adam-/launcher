@@ -560,17 +560,24 @@ public class Launcher
 						new FileByFileV1DeltaApplier().applyDelta(old, patchStream, fout);
 					}
 
-					continue;
+					String destHash = hash(dest);
+					if (artifact.getHash().equals(destHash))
+					{
+						log.debug("Patching successful for {}", artifact.getName());
+						continue;
+					}
+
+					log.debug("Patched artifact hash mismatches! {}: got {} expected {}", artifact.getName(), destHash, artifact.getHash());
 				}
 				catch (IOException | VerificationException e)
 				{
 					log.warn("unable to download patch {}", diff.getName(), e);
 					// Fall through and try downloading the full artifact
-
-					// Adjust the download size for the difference
-					totalDownloadBytes -= diff.getSize();
-					totalDownloadBytes += artifact.getSize();
 				}
+
+				// Adjust the download size for the difference
+				totalDownloadBytes -= diff.getSize();
+				totalDownloadBytes += artifact.getSize();
 			}
 
 			log.debug("Downloading {}", artifact.getName());
