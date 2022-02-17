@@ -151,7 +151,12 @@ extern "C" JNIEXPORT void JNICALL Java_net_runelite_launcher_Launcher_setBlackli
         }                                                               \
     } while (0)
 
-#define Detach(module, name) DetourDetach(&module##name, RuneLite##module##name)
+#define Detach(module, name)                                     \
+    do {                                                         \
+        if (module##name != nullptr) {                           \
+            DetourDetach(&module##name, RuneLite##module##name); \
+        }                                                        \
+    } while (0)
 
 BOOL WINAPI DllMain(HINSTANCE hinst, DWORD dwReason, LPVOID reserved) {
     if (DetourIsHelperProcess()) {
