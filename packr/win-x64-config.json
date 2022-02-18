@@ -10,8 +10,7 @@
     "-Drunelite.launcher.nojvm=true",
     "-Xmx512m",
     "-Xss2m",
-    "-XX:CompileThreshold=1500",
-    "-Drunelite.launcher.blacklistedDlls=RTSSHooks.dll,RTSSHooks64.dll"
+    "-XX:CompileThreshold=1500"
   ],
   "output": "native-win64"
 }
