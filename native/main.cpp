@@ -164,8 +164,8 @@ BOOL WINAPI DllMain(HINSTANCE hinst, DWORD dwReason, LPVOID reserved) {
     }
 
     if (dwReason == DLL_PROCESS_ATTACH) {
-        K32 = LoadLibraryA("kernel32.dll");
-        KB = LoadLibraryA("kernelbase.dll");
+        K32 = LoadLibraryW(L"kernel32.dll");
+        KB = LoadLibraryW(L"kernelbase.dll");
         if (K32 == nullptr || KB == nullptr) {
             return TRUE;
         }
