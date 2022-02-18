@@ -820,7 +820,7 @@ public class Launcher
 			log.debug("Setting blacklisted dlls: {}", blacklistedDlls);
 			setBlacklistedDlls(dlls);
 		}
-		catch (Exception ex)
+		catch (Error ex)
 		{
 			log.debug("Error setting dll blacklist", ex);
 		}
