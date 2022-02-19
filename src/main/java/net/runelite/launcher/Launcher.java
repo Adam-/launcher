@@ -156,6 +156,7 @@ public class Launcher
 
 		final boolean nodiff = options.has("nodiff");
 		final boolean insecureSkipTlsVerification = options.has("insecure-skip-tls-verification");
+		final boolean postInstall = options.has("postinstall");
 
 		// Setup debug
 		final boolean isDebug = options.has("debug");
@@ -215,7 +216,7 @@ public class Launcher
 				setupInsecureTrustManager();
 			}
 
-			if (options.has("postinstall"))
+			if (postInstall)
 			{
 				postInstall(jvmParams);
 				return;
@@ -396,9 +397,12 @@ public class Launcher
 		catch (Exception e)
 		{
 			log.error("Failure during startup", e);
-			SwingUtilities.invokeLater(() ->
-				new FatalErrorDialog("RuneLite has encountered an unexpected error during startup.")
-					.open());
+			if (!postInstall)
+			{
+				SwingUtilities.invokeLater(() ->
+					new FatalErrorDialog("RuneLite has encountered an unexpected error during startup.")
+						.open());
+			}
 		}
 		catch (Error e)
 		{
