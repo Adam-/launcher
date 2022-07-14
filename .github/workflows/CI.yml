@@ -11,10 +11,10 @@ jobs:
     - run: choco install resourcehacker.portable
     - name: x64
       shell: bash
-      run: build-win64.sh
+      run: ./build-win64.sh
     - name: x86
       shell: bash
-      run: build-win32.sh
+      run: ./build-win32.sh
     - uses: actions/upload-artifact@v3
       with:
         name: windows-amd64
