@@ -3,6 +3,34 @@ name: CI
 on: [ push, pull_request ]
 
 jobs:
+  windows:
+    runs-on: windows-2022
+    steps:
+    - uses: actions/checkout@v3
+    - run: choco install innosetup
+    - name: x64
+      shell: bash
+      run: |
+        ./build-win64.sh
+    # - name: build
+    #   shell: cmd
+    #   run: |
+    #     cd src/main/native/packr
+    #     call fips
+    #     call fips fetch
+    #     call build-windows-vs2022.bat
+    # - uses: actions/upload-artifact@v3
+    #   with:
+    #     name: windows-x86
+    #     path: src\main\native\fips-deploy\packr\packr-win32-vs2022-release\packr.exe
+    #     retention-days: 1
+    #     if-no-files-found: error
+    - uses: actions/upload-artifact@v3
+      with:
+        name: windows-amd64
+        path: RuneLiteSetup.exe
+        retention-days: 1
+        if-no-files-found: error
   build:
     runs-on: ubuntu-20.04
 
