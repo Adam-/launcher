@@ -7,6 +7,14 @@ jobs:
     runs-on: windows-2022
     steps:
     - uses: actions/checkout@v3
+    - name: cache
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.m2/repository
+        key: ${{ runner.os }}-cache-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-cache-
     - run: choco install innosetup
     - run: choco install resourcehacker.portable
     - name: Set up JDK 11
@@ -34,12 +42,11 @@ jobs:
         path: RuneLiteSetup32.exe
         retention-days: 1
         if-no-files-found: error
-  build:
+  linux:
     runs-on: ubuntu-20.04
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Cache
+    - uses: actions/checkout@v3
+    - name: cache
       uses: actions/cache@v2
       with:
         path: |
