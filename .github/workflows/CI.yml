@@ -63,6 +63,8 @@ jobs:
       run: mvn verify -B
     - name: linux-x64
       run: ./build-linux-x86_64.sh
+    - name: linux-aarch64
+      run: ./build-linux-aarch64.sh
     - uses: actions/upload-artifact@v3
       with:
         name: jar
@@ -73,5 +75,11 @@ jobs:
       with:
         name: linux-x64
         path: native-linux-x86_64/RuneLite.AppImage
+        retention-days: 1
+        if-no-files-found: error
+    - uses: actions/upload-artifact@v3
+      with:
+        name: linux-aarch64
+        path: native-linux-aarch64/RuneLite-aarch64.AppImage
         retention-days: 1
         if-no-files-found: error
