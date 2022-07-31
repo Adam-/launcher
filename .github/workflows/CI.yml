@@ -115,6 +115,7 @@ jobs:
         cd create-dmg
         npm install
         ln -s cli.js create-dmg
-    - run: echo create-dmg/node_modules/.bin >> $GITHUB_PATH
+        chmod +x create-dmg
+    - run: echo create-dmg >> $GITHUB_PATH
     - name: macos-x64
       run: ./build-osx-x64.sh
