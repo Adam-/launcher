@@ -112,6 +112,7 @@ jobs:
       run: mvn verify -B
     - run: git clone https://github.com/runelite/create-dmg
     - run: |
+        set -e
         cd create-dmg
         npm install
         ln -s cli.js create-dmg
