@@ -112,7 +112,7 @@ jobs:
       run: mvn verify -B
     - run: git clone https://github.com/Adam-/create-dmg -b format
     - run: cd create-dmg && npm install
-    - run: find node_modules -name create-dmg
+    - run: find create-dmg -name create-dmg
     - run: echo ./node_modules/.bin >> $GITHUB_PATH
     - name: macos-x64
       run: ./build-osx-x64.sh
