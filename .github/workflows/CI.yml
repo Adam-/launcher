@@ -111,8 +111,10 @@ jobs:
     - name: build
       run: mvn verify -B
     - run: git clone https://github.com/Adam-/create-dmg -b format
-    - run: cd create-dmg && npm install
-    - run: find create-dmg/node_modules -name create-dmg
+    - run: |
+        cd create-dmg
+        npm install
+        ln -s cli.js create-dmg
     - run: echo create-dmg/node_modules/.bin >> $GITHUB_PATH
     - name: macos-x64
       run: ./build-osx-x64.sh
