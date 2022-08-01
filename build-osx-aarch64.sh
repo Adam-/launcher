@@ -20,7 +20,7 @@ echo "655a8e2a45805e15331bdbb0f91d9d8ca4681ce435f688e3aaf51a1febfe4f90  ${FILE}"
 # packr requires a "jdk" and pulls the jre from it - so we have to place it inside
 # the jdk folder at jre/
 if ! [ -d osx-aarch64-jdk ] ; then
-    tar zxf OpenJDK17U-jre_x64_mac_hotspot_${JDK_VER}_${JDK_BUILD}.tar.gz
+    tar zxf ${FILE}
     mkdir osx-aarch64-jdk
     mv jdk-${JDK_VER}+${JDK_BUILD}-jre osx-aarch64-jdk/jre
 
