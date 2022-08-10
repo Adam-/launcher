@@ -32,19 +32,9 @@ echo "f200fb7088dbb5e61e0835fe7b0d7fc1310beda192dacd764927567dcd7c4f0f  packr_${
 java -jar packr_${PACKR_VERSION}.jar \
     packr/win-x64-config.json
 
-cmd //c test.bat
-
-echo log1
-cat log1.txt || true
-
-echo log2
-cat log2.txt ||true
-
-echo out1
-cat out1.txt || true
-
-echo out2
-cat out2.exe || true
+tools/rcedit-x64 native-win64/RuneLite.exe \
+  --application-manifest packr/runelite.manifest \
+  --set-icon runelite.ico
 
 # We use the filtered iss file
-#iscc target/filtered-resources/runelite.iss
+iscc target/filtered-resources/runelite.iss
