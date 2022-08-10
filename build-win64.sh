@@ -38,7 +38,12 @@ resourcehacker \
     -save native-win64/RuneLite.exe \
     -action addoverwrite \
     -res packr/runelite.manifest \
+    -log rh.log \
     -mask MANIFEST,1,
+
+echo rh log manifest start
+cat rh.log
+rm -f rh.log
 
 # packr on Windows doesn't support icons, so we use resourcehacker to include it
 
