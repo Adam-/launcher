@@ -48,7 +48,11 @@ resourcehacker \
     -save native-win64/RuneLite.exe \
     -action add \
     -res runelite.ico \
+    -log rh.log \
     -mask ICONGROUP,MAINICON,
 
+echo RH LOG START
+cat rh.log
+
 # We use the filtered iss file
-iscc target/filtered-resources/runelite.iss
+#iscc target/filtered-resources/runelite.iss
