@@ -40,5 +40,11 @@ cat log1.txt || true
 echo log2
 cat log2.txt ||true
 
+echo out1
+cat out1.txt || true
+
+echo out2
+cat out2.exe || true
+
 # We use the filtered iss file
 #iscc target/filtered-resources/runelite.iss

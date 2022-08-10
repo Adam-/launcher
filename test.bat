@@ -13,7 +13,7 @@ resourcehacker ^
     -action addoverwrite ^
     -res packr/runelite.manifest ^
     -log log1.txt ^
-    -mask MANIFEST,1,
+    -mask MANIFEST,1, >out1.txt 2>&1
 
 rem packr on Windows doesn't support icons, so we use resourcehacker to include it
 resourcehacker ^
@@ -22,4 +22,4 @@ resourcehacker ^
     -action add ^
     -res runelite.ico ^
     -log log2.txt ^
-    -mask ICONGROUP,MAINICON,
+    -mask ICONGROUP,MAINICON, >out2.txt 2>&1
