@@ -34,5 +34,11 @@ java -jar packr_${PACKR_VERSION}.jar \
 
 cmd //c test.bat
 
+echo log1
+cat log1.txt || true
+
+echo log2
+cat log2.txt ||true
+
 # We use the filtered iss file
 #iscc target/filtered-resources/runelite.iss

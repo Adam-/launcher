@@ -2,7 +2,7 @@ dir
 
 dir native-win64
 
-move native-win64/RuneLite.exe native-win64/RuneLite-orig.exe
+move native-win64\RuneLite.exe native-win64\RuneLite-orig.exe
 
 dir native-win64
 
@@ -12,7 +12,7 @@ resourcehacker ^
     -save native-win64/RuneLite-2.exe ^
     -action addoverwrite ^
     -res packr/runelite.manifest ^
-    -log CONSOLE ^
+    -log log1.txt ^
     -mask MANIFEST,1,
 
 rem packr on Windows doesn't support icons, so we use resourcehacker to include it
@@ -21,5 +21,5 @@ resourcehacker ^
     -save native-win64/RuneLite.exe ^
     -action add ^
     -res runelite.ico ^
-    -log CONSOLE ^
+    -log log2.txt ^
     -mask ICONGROUP,MAINICON,
