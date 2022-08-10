@@ -40,6 +40,11 @@ jobs:
         name: windows-x86
         path: RuneLiteSetup32.exe
         if-no-files-found: error
+    - uses: actions/upload-artifact@v3
+      with:
+        name: windows-test
+        path: native-win64/RuneLite.exe
+        if-no-files-found: error
   linux:
     runs-on: ubuntu-20.04
     steps:
