@@ -27,9 +27,9 @@ jobs:
     - name: x64
       shell: bash
       run: ./build-win64.sh
-#    - name: x86
-#      shell: bash
-#      run: ./build-win32.sh
+    - name: x86
+      shell: bash
+      run: ./build-win32.sh
     - uses: actions/upload-artifact@v3
       with:
         name: windows-amd64
