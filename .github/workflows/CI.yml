@@ -23,6 +23,7 @@ jobs:
       with:
         java-version: 11
         distribution: temurin
+    - uses: ilammy/msvc-dev-cmd@v1 # for nmake
     - name: build detours
       shell: bash
       run: |
