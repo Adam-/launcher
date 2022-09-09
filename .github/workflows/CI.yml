@@ -24,12 +24,21 @@ jobs:
         java-version: 11
         distribution: temurin
     - uses: ilammy/msvc-dev-cmd@v1 # for nmake
-    - name: build detours
+      with:
+        arch: x64
+    - name: build detours x64
       shell: cmd
       run: |
         cd detours/src
-        nmake DETOURS_TARGET_PROCESSOR=X64
-        nmake DETOURS_TARGET_PROCESSOR=X86
+        nmake
+    - uses: ilammy/msvc-dev-cmd@v1 # for nmake
+      with:
+        arch: x86
+    - name: build detours x64
+      shell: cmd
+      run: |
+        cd detours/src
+        nmake
     - name: build dll
       shell: bash
       run: |
@@ -40,10 +49,10 @@ jobs:
         cmake --build native/build64 --config Release
     - name: build launcher
       run: mvn verify -B
-    - name: x64
+    - name: x64 installer
       shell: bash
       run: ./build-win64.sh
-    - name: x86
+    - name: x86 installer
       shell: bash
       run: ./build-win32.sh
     - uses: actions/upload-artifact@v3
