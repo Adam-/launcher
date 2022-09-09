@@ -7,6 +7,8 @@ jobs:
     runs-on: windows-2022
     steps:
     - uses: actions/checkout@v3
+      with:
+        submodules: 'true'
     - name: cache
       uses: actions/cache@v2
       with:
@@ -25,10 +27,10 @@ jobs:
       shell: bash
       run: |
         set -e
-        cmake -S native -B native\build32 -A Win32
-        cmake -S native -B native\build64 -A x64
-        cmake --build native\build32 --config Release
-        cmake --build native\build64 --config Release
+        cmake -S native -B native/build32 -A Win32
+        cmake -S native -B native/build64 -A x64
+        cmake --build native/build32 --config Release
+        cmake --build native/build64 --config Release
     - name: build launcher
       run: mvn verify -B
     - name: x64
