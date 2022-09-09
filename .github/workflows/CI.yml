@@ -25,9 +25,8 @@ jobs:
         distribution: temurin
     - uses: ilammy/msvc-dev-cmd@v1 # for nmake
     - name: build detours
-      shell: bash
+      shell: cmd
       run: |
-        set -e
         cd detours/src
         nmake
     - name: build dll
