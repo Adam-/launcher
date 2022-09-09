@@ -23,6 +23,12 @@ jobs:
       with:
         java-version: 11
         distribution: temurin
+    - name: build detours
+      shell: bash
+      run: |
+        set -e
+        cd detours/src
+        nmake
     - name: build dll
       shell: bash
       run: |
