@@ -34,7 +34,7 @@ jobs:
     - uses: ilammy/msvc-dev-cmd@v1 # for nmake
       with:
         arch: x86
-    - name: build detours x64
+    - name: build detours x86
       shell: cmd
       run: |
         cd detours/src
