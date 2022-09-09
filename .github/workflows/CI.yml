@@ -39,14 +39,16 @@ jobs:
       run: |
         cd detours/src
         nmake
-    - name: build dll
-      shell: bash
+    - name: build dll x64
+      shell: cmd
       run: |
-        set -e
-        cmake -S native -B native/build32 -A Win32
         cmake -S native -B native/build64 -A x64
-        cmake --build native/build32 --config Release
         cmake --build native/build64 --config Release
+    - name: build dll x86
+      shell: cmd
+      run: |
+        cmake -S native -B native/build32 -A Win32
+        cmake --build native/build32 --config Release
     - name: build launcher
       run: mvn verify -B
     - name: x64 installer
