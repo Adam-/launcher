@@ -28,7 +28,8 @@ jobs:
       shell: cmd
       run: |
         cd detours/src
-        nmake
+        nmake DETOURS_TARGET_PROCESSOR=X64
+        nmake DETOURS_TARGET_PROCESSOR=X86
     - name: build dll
       shell: bash
       run: |
