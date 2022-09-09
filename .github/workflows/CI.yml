@@ -22,6 +22,7 @@ jobs:
         java-version: 11
         distribution: temurin
     - name: build dll
+      shell: bash
       run: |
         set -e
         cmake -S native -B native\build32 -A Win32
