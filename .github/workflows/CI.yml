@@ -6,9 +6,9 @@ jobs:
   windows:
     runs-on: windows-2022
     steps:
-    - name: Set git to use LF
-      run: |
-        git config --global core.autocrlf false
+#    - name: Set git to use LF
+#      run: |
+#        git config --global core.autocrlf false
     - uses: actions/checkout@v3
       with:
         submodules: 'true'
@@ -66,6 +66,12 @@ jobs:
         path: |
           RuneLiteSetup.exe
           RuneLiteSetup32.exe
+        if-no-files-found: error
+    - uses: actions/upload-artifact@v3
+      with:
+        name: windows-jar
+        path: |
+          target/RuneLite.jar
         if-no-files-found: error
   linux:
     runs-on: ubuntu-20.04
@@ -139,4 +145,10 @@ jobs:
         path: |
           native-osx/RuneLite-x64.dmg
           native-osx-aarch64/RuneLite-aarch64.dmg
+        if-no-files-found: error
+    - uses: actions/upload-artifact@v3
+      with:
+        name: macos-jar
+        path: |
+          target/RuneLite.jar
         if-no-files-found: error
