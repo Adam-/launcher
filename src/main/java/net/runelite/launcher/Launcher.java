@@ -188,7 +188,7 @@ public class Launcher
 					.collect(Collectors.toList());
 				try
 				{
-					ReflectionLauncher.launch(classpath, getClientArgs(options, settings));
+					ReflectionLauncher.launch(classpath, getClientArgs(settings));
 				}
 				catch (Exception e)
 				{
@@ -373,7 +373,7 @@ public class Launcher
 				return;
 			}
 
-			final Collection<String> clientArgs = getClientArgs(options, settings);
+			final Collection<String> clientArgs = getClientArgs(settings);
 			SplashScreen.stage(.90, "Starting the client", "");
 
 			var classpath = artifacts.stream()
@@ -508,7 +508,7 @@ public class Launcher
 		return false;
 	}
 
-	private static Collection<String> getClientArgs(OptionSet options, LauncherSettings settings)
+	private static Collection<String> getClientArgs(LauncherSettings settings)
 	{
 		final var args = new ArrayList<>(settings.clientArguments);
 
