@@ -185,8 +185,8 @@ class LauncherSettings
 			var gson = new Gson();
 
 			try (FileOutputStream fout = new FileOutputStream(tmpFile);
-				 FileChannel channel = fout.getChannel();
-				 OutputStreamWriter writer = new OutputStreamWriter(fout, StandardCharsets.UTF_8))
+				FileChannel channel = fout.getChannel();
+				OutputStreamWriter writer = new OutputStreamWriter(fout, StandardCharsets.UTF_8))
 			{
 				channel.lock();
 				writer.write(gson.toJson(settings));
