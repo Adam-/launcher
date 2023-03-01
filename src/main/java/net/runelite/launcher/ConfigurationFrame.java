@@ -157,8 +157,6 @@ public class ConfigurationFrame extends JFrame
 		pack();
 		setLocationRelativeTo(null);
 		setMinimumSize(getSize());
-
-		setVisible(true);
 	}
 
 	private void save(ActionEvent l)
@@ -239,7 +237,8 @@ public class ConfigurationFrame extends JFrame
 
 	static void open()
 	{
-		new ConfigurationFrame(LauncherSettings.loadSettings());
+		new ConfigurationFrame(LauncherSettings.loadSettings())
+			.setVisible(true);
 	}
 
 	public static void main(String[] args)

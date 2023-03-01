@@ -34,8 +34,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -160,7 +162,7 @@ class LauncherSettings
 	static LauncherSettings loadSettings()
 	{
 		var settingsFile = new File(LAUNCHER_SETTINGS).getAbsoluteFile();
-		try (var in = new InputStreamReader(new FileInputStream(settingsFile)))
+		try (var in = new InputStreamReader(new FileInputStream(settingsFile), StandardCharsets.UTF_8))
 		{
 			var settings = new Gson()
 				.fromJson(in, LauncherSettings.class);
@@ -189,7 +191,7 @@ class LauncherSettings
 
 			try (FileOutputStream fout = new FileOutputStream(tmpFile);
 				 FileChannel channel = fout.getChannel();
-				 PrintWriter writer = new PrintWriter(fout))
+				 OutputStreamWriter writer = new OutputStreamWriter(fout, StandardCharsets.UTF_8))
 			{
 				channel.lock();
 				writer.write(gson.toJson(settings));
