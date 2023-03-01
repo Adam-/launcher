@@ -25,7 +25,6 @@
 package net.runelite.launcher;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Splitter;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import java.io.File;
@@ -35,20 +34,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.swing.table.TableRowSorter;
 import joptsimple.OptionSet;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
