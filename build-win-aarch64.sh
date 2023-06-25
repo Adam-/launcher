@@ -24,7 +24,7 @@ if ! [ -d win-aarch64-jdk ] ; then
       --no-header-files \
       --no-man-pages \
       --output win-aarch64-jdk/jre \
-      --module-path microsoft-jdk-11.0.19-windows-aarch64/jdk-11.0.19+7/jmods \
+      --module-path jdk-$WIN_AARCH64_VERSION/jmods \
       --add-modules java.base,java.compiler,java.datatransfer,java.xml,java.prefs,java.desktop,java.instrument \
       --add-modules java.logging,java.management,java.security.sasl,java.naming,java.rmi,java.management.rmi \
       --add-modules java.net.http,java.scripting,java.security.jgss,java.transaction.xa,java.sql,java.sql.rowset \
