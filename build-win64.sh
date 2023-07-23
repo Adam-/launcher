@@ -28,7 +28,7 @@ fi
 
 echo "${PACKR_HASH}  packr_${PACKR_VERSION}.jar" | sha256sum -c
 
-java -jar packr_${PACKR_VERSION}.jar \
+java -jar packr.jar \
     packr/win-x64-config.json
 
 tools/rcedit-x64 native-win64/RuneLite.exe \
