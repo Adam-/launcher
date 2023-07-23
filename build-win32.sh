@@ -38,7 +38,7 @@ tools/rcedit-x64 native-win32/RuneLite.exe \
 echo RuneLite.exe 32bit sha256sum
 sha256sum native-win32/RuneLite.exe
 
-dumpbin /HEADERS native-win32/RuneLite.exe
+dumpbin //HEADERS native-win32/RuneLite.exe
 
 # We use the filtered iss file
 iscc target/filtered-resources/runelite32.iss
