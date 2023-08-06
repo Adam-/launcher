@@ -33,7 +33,7 @@ fi
 mkdir -p build/macos-aarch64/Contents/{MacOS,Resources}
 
 cp native/build-aarch64/src/RuneLite build/macos-aarch64/Contents/MacOS/
-cp packr/macos-aarch64-config.json build/macos-aarch64/Contents/MacOS/
+cp packr/macos-aarch64-config.json build/macos-aarch64/Contents/MacOS/config.json
 cp target/filtered-resources/Info.plist build/macos-aarch64/Contents/
 cp packr/runelite.icns build/macos-aarch64/Contents/Resources/
 

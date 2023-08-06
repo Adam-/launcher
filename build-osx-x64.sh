@@ -18,7 +18,7 @@ echo "$MAC_AMD64_CHKSUM  mac64_jre.tar.gz" | shasum -c
 mkdir -p build/macos-x64/Contents/{MacOS,Resources}
 
 cp native/build-x64/src/RuneLite build/macos-x64/Contents/MacOS/
-cp packr/macos-x64-config.json build/macos-x64/Contents/MacOS/
+cp packr/macos-x64-config.json build/macos-x64/Contents/MacOS/config.json
 cp target/filtered-resources/Info.plist build/macos-x64/Contents/
 cp packr/runelite.icns build/macos-x64/Contents/Resources/
 
