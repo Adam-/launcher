@@ -2,12 +2,12 @@
 
 set -e
 
-PACKR_VERSION="runelite-1.7"
-PACKR_HASH="f61c7faeaa364b6fa91eb606ce10bd0e80f9adbce630d2bae719aef78d45da61"
-
 SIGNING_IDENTITY="Developer ID Application"
 
 source .jdk-versions.sh
+
+rm -rf build/macos-aarch64
+mkdir -p build/macos-aarch64
 
 if ! [ -f mac_aarch64_jre.tar.gz ] ; then
     curl -Lo mac_aarch64_jre.tar.gz $MAC_AARCH64_LINK
@@ -30,31 +30,30 @@ if ! [ -d osx-aarch64-jdk ] ; then
     popd
 fi
 
-if ! [ -f packr_${PACKR_VERSION}.jar ] ; then
-    curl -Lo packr_${PACKR_VERSION}.jar \
-        https://github.com/runelite/packr/releases/download/${PACKR_VERSION}/packr.jar
-fi
+mkdir -p build/macos-aarch64/Contents/{MacOS,Resources}
 
-echo "${PACKR_HASH}  packr_${PACKR_VERSION}.jar" | shasum -c
+cp native/build-aarch64/src/RuneLite build/macos-aarch64/Contents/MacOS/
+cp packr/macos-aarch64-config.json build/macos-aarch64/Contents/MacOS/
+cp target/filtered-resources/Info.plist build/macos-aarch64/Contents/
+cp packr/runelite.icns build/macos-aarch64/Contents/Resources/
 
-java -jar packr_${PACKR_VERSION}.jar \
-	packr/macos-aarch64-config.json
-
-cp target/filtered-resources/Info.plist native-osx-aarch64/RuneLite.app/Contents
+tar zxf mac_aarch64_jre.tar.gz
+mkdir build/macos-aarch64/jre/
+mv jdk-$MAC_AARCH64_VERSION-jre/Contents/Home/* build/macos-aarch64/jre/
 
 echo Setting world execute permissions on RuneLite
-pushd native-osx-aarch64/RuneLite.app
+pushd build/macos-aarch64
 chmod g+x,o+x Contents/MacOS/RuneLite
 popd
 
-codesign -f -s "${SIGNING_IDENTITY}" --entitlements osx/signing.entitlements --options runtime native-osx-aarch64/RuneLite.app || true
+codesign -f -s "${SIGNING_IDENTITY}" --entitlements osx/signing.entitlements --options runtime build/macos-aarch64 || true
 
 # create-dmg exits with an error code due to no code signing, but is still okay
-create-dmg native-osx-aarch64/RuneLite.app native-osx-aarch64/ || true
+create-dmg build/macos-aarch64 build/macos-aarch64 || true
 
-mv native-osx-aarch64/RuneLite\ *.dmg native-osx-aarch64/RuneLite-aarch64.dmg
+mv build/macos-aarch64/RuneLite\ *.dmg RuneLite-aarch64.dmg
 
 # Notarize app
-if xcrun notarytool submit native-osx-aarch64/RuneLite-aarch64.dmg --wait --keychain-profile "AC_PASSWORD" ; then
-    xcrun stapler staple native-osx-aarch64/RuneLite-aarch64.dmg
+if xcrun notarytool submit RuneLite-aarch64.dmg --wait --keychain-profile "AC_PASSWORD" ; then
+    xcrun stapler staple RuneLite-aarch64.dmg
 fi
