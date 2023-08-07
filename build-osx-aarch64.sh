@@ -45,7 +45,7 @@ mkdir $APPBASE/Contents/Resources/jre
 mv jdk-$MAC_AARCH64_VERSION-jre/Contents/Home/* $APPBASE/Contents/Resources/jre
 
 echo Setting world execute permissions on RuneLite
-pushd build/macos-aarch64
+pushd $APPBASE
 chmod g+x,o+x Contents/MacOS/RuneLite
 popd
 
