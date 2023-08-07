@@ -23,7 +23,7 @@ cp native/build-x64/src/RuneLite $APPBASE/Contents/MacOS/
 cp target/RuneLite.jar $APPBASE/Contents/Resources/
 cp packr/macos-x64-config.json $APPBASE/Contents/Resources/config.json
 cp target/filtered-resources/Info.plist $APPBASE/Contents/
-cp packr/runelite.icns $APPBASE/Contents/Resources/
+cp packr/runelite.icns $APPBASE/Contents/Resources/icons.icns
 
 tar zxf mac64_jre.tar.gz
 mkdir $APPBASE/Contents/Resources/jre
