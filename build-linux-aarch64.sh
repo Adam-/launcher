@@ -23,6 +23,7 @@ chmod -R u=rwX,go=rX appimage
 chmod 644 target/RuneLite.jar
 
 cp native/build-aarch64/src/RuneLite build/linux-aarch64/
+cp target/RuneLite.jar build/linux-aarch64/
 cp packr/linux-aarch64-config.json build/linux-aarch64/config.json
 cp target/filtered-resources/runelite.desktop build/linux-aarch64/
 cp appimage/runelite.png build/linux-aarch64/

@@ -30,26 +30,29 @@ if ! [ -d osx-aarch64-jdk ] ; then
     popd
 fi
 
-mkdir -p build/macos-aarch64/Contents/{MacOS,Resources}
+APPBASE="build/macos-aarch64/RuneLite.app"
 
-cp native/build-aarch64/src/RuneLite build/macos-aarch64/Contents/MacOS/
-cp packr/macos-aarch64-config.json build/macos-aarch64/Contents/MacOS/config.json
-cp target/filtered-resources/Info.plist build/macos-aarch64/Contents/
-cp packr/runelite.icns build/macos-aarch64/Contents/Resources/
+mkdir -p $APPBASE/Contents/{MacOS,Resources}
+
+cp native/build-aarch64/src/RuneLite $APPBASE/Contents/MacOS/
+cp target/RuneLite.jar $APPBASE/Contents/Resources/
+cp packr/macos-aarch64-config.json $APPBASE/Contents/Resources/config.json
+cp target/filtered-resources/Info.plist $APPBASE/Contents/
+cp packr/runelite.icns $APPBASE/Contents/Resources/
 
 tar zxf mac_aarch64_jre.tar.gz
-mkdir build/macos-aarch64/jre/
-mv jdk-$MAC_AARCH64_VERSION-jre/Contents/Home/* build/macos-aarch64/jre/
+mkdir $APPBASE/Contents/Resources/jre
+mv jdk-$MAC_AARCH64_VERSION-jre/Contents/Home/* $APPBASE/Contents/Resources/jre
 
 echo Setting world execute permissions on RuneLite
 pushd build/macos-aarch64
 chmod g+x,o+x Contents/MacOS/RuneLite
 popd
 
-codesign -f -s "${SIGNING_IDENTITY}" --entitlements osx/signing.entitlements --options runtime build/macos-aarch64 || true
+codesign -f -s "${SIGNING_IDENTITY}" --entitlements osx/signing.entitlements --options runtime $APPBASE || true
 
 # create-dmg exits with an error code due to no code signing, but is still okay
-create-dmg build/macos-aarch64 . || true
+create-dmg $APPBASE . || true
 mv RuneLite\ *.dmg RuneLite-aarch64.dmg
 
 # Notarize app
