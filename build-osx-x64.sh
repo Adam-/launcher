@@ -23,11 +23,11 @@ cp target/filtered-resources/Info.plist build/macos-x64/RuneLite.app/Contents/
 cp packr/runelite.icns build/macos-x64/RuneLite.app/Contents/Resources/
 
 tar zxf mac64_jre.tar.gz
-mkdir build/macos-x64/jre/
+mkdir build/macos-x64/RuneLite.app/jre/
 mv jdk-$MAC_AMD64_VERSION-jre/Contents/Home/* build/macos-x64/RuneLite.app/jre/
 
 echo Setting world execute permissions on RuneLite
-pushd build/macos-x64
+pushd build/macos-x64/RuneLite.app
 chmod g+x,o+x Contents/MacOS/RuneLite
 popd
 
