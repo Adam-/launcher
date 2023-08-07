@@ -49,9 +49,8 @@ popd
 codesign -f -s "${SIGNING_IDENTITY}" --entitlements osx/signing.entitlements --options runtime build/macos-aarch64 || true
 
 # create-dmg exits with an error code due to no code signing, but is still okay
-create-dmg build/macos-aarch64 build/macos-aarch64 || true
-
-mv build/macos-aarch64/RuneLite\ *.dmg RuneLite-aarch64.dmg
+create-dmg build/macos-aarch64 . || true
+mv RuneLite\ *.dmg RuneLite-aarch64.dmg
 
 # Notarize app
 if xcrun notarytool submit RuneLite-aarch64.dmg --wait --keychain-profile "AC_PASSWORD" ; then

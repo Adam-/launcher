@@ -15,29 +15,28 @@ fi
 
 echo "$MAC_AMD64_CHKSUM  mac64_jre.tar.gz" | shasum -c
 
-mkdir -p build/macos-x64/Contents/{MacOS,Resources}
+mkdir -p build/macos-x64/RuneLite.app/Contents/{MacOS,Resources}
 
-cp native/build-x64/src/RuneLite build/macos-x64/Contents/MacOS/
-cp packr/macos-x64-config.json build/macos-x64/Contents/MacOS/config.json
-cp target/filtered-resources/Info.plist build/macos-x64/Contents/
-cp packr/runelite.icns build/macos-x64/Contents/Resources/
+cp native/build-x64/src/RuneLite build/macos-x64/RuneLite.app/Contents/MacOS/
+cp packr/macos-x64-config.json build/macos-x64/RuneLite.app/Contents/MacOS/config.json
+cp target/filtered-resources/Info.plist build/macos-x64/RuneLite.app/Contents/
+cp packr/runelite.icns build/macos-x64/RuneLite.app/Contents/Resources/
 
 tar zxf mac64_jre.tar.gz
 mkdir build/macos-x64/jre/
-mv jdk-$MAC_AMD64_VERSION-jre/Contents/Home/* build/macos-x64/jre/
+mv jdk-$MAC_AMD64_VERSION-jre/Contents/Home/* build/macos-x64/RuneLite.app/jre/
 
 echo Setting world execute permissions on RuneLite
 pushd build/macos-x64
 chmod g+x,o+x Contents/MacOS/RuneLite
 popd
 
-codesign -f -s "${SIGNING_IDENTITY}" --entitlements osx/signing.entitlements --options runtime build/macos-x64 || true
+codesign -f -s "${SIGNING_IDENTITY}" --entitlements osx/signing.entitlements --options runtime build/macos-x64/RuneLite.app || true
 
 # create-dmg exits with an error code due to no code signing, but is still okay
 # note we use Adam-/create-dmg as upstream does not support UDBZ
-create-dmg --format UDBZ build/macos-x64 build/macos-x64 || true
-
-mv build/macos-x64/RuneLite\ *.dmg RuneLite-x64.dmg
+create-dmg --format UDBZ build/macos-x64/RuneLite.app . || true
+mv RuneLite\ *.dmg RuneLite-x64.dmg
 
 if ! hdiutil imageinfo RuneLite-x64.dmg | grep -q "Format: UDBZ" ; then
     echo "Format of resulting dmg was not UDBZ, make sure your create-dmg has support for --format"
