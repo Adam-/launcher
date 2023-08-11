@@ -2,6 +2,10 @@
 
 set -e
 
+pushd detours/src
+CMD /C nmake
+popd
+
 cmake -S liblauncher -B liblauncher/build32 -A Win32
 cmake --build liblauncher/build32 --config Release
 

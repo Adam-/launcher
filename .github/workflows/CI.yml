@@ -23,41 +23,30 @@ jobs:
       with:
         java-version: 11
         distribution: temurin
+    - name: build launcher
+      run: mvn verify -B
+
     - uses: ilammy/msvc-dev-cmd@v1 # for nmake
       with:
         arch: x64
-    - name: build detours x64
-      shell: cmd
-      run: |
-        cd detours/src
-        nmake
-    - uses: ilammy/msvc-dev-cmd@v1 # for nmake
-      with:
-        arch: x86
-    - name: build detours x86
-      shell: cmd
-      run: |
-        cd detours/src
-        nmake
-    - uses: ilammy/msvc-dev-cmd@v1 # for nmake
-      with:
-        arch: amd64_arm64
-    - name: build detours aarch64
-      shell: cmd
-      run: |
-        cd detours/src
-        nmake
-    - name: build launcher
-      run: mvn verify -B
     - name: x64 installer
       shell: bash
       run: ./build-win64.sh
+
+    - uses: ilammy/msvc-dev-cmd@v1 # for nmake
+      with:
+        arch: x86
     - name: x86 installer
       shell: bash
       run: ./build-win32.sh
+
+    - uses: ilammy/msvc-dev-cmd@v1 # for nmake
+      with:
+        arch: amd64_arm64
     - name: AArch64 installer
       shell: bash
       run: ./build-win-aarch64.sh
+
     - uses: actions/upload-artifact@v3
       with:
         name: windows

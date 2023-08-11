@@ -2,6 +2,10 @@
 
 set -e
 
+pushd detours/src
+CMD /C nmake
+popd
+
 cmake -S liblauncher -B liblauncher/build64 -A x64
 cmake --build liblauncher/build64 --config Release
 
