@@ -3,7 +3,7 @@
 set -e
 
 pushd detours/src
-CMD /C nmake
+CMD "/C nmake"
 popd
 
 cmake -S liblauncher -B liblauncher/buildaarch64 -A ARM64
