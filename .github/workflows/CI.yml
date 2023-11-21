@@ -145,8 +145,15 @@ jobs:
       run: ./build-osx-aarch64.sh
     - uses: actions/upload-artifact@v3
       with:
-        name: macos
+        name: macos-app
         path: |
           RuneLite-x64.dmg
           RuneLite-aarch64.dmg
+        if-no-files-found: error
+    - uses: actions/upload-artifact@v3
+      with:
+        name: macos-dmg
+        path: |
+          build/macos-x64/RuneLite.app
+          build/macos-aarch64/RuneLite.app
         if-no-files-found: error
