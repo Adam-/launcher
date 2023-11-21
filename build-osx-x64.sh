@@ -2,6 +2,8 @@
 
 set -e
 
+APPBASE="build/macos-x64/RuneLite.app"
+
 build() {
     pushd native
     cmake -DCMAKE_OSX_ARCHITECTURES=x86_64 -B build-x64 .
@@ -19,8 +21,6 @@ build() {
 
     echo "$MAC_AMD64_CHKSUM  mac64_jre.tar.gz" | shasum -c
 
-    APPBASE="build/macos-x64/RuneLite.app"
-
     mkdir -p $APPBASE/Contents/{MacOS,Resources}
 
     cp native/build-x64/src/RuneLite $APPBASE/Contents/MacOS/
@@ -37,6 +37,8 @@ build() {
     pushd $APPBASE
     chmod g+x,o+x Contents/MacOS/RuneLite
     popd
+
+    otool -l $APPBASE/Contents/MacOS/RuneLite
 }
 
 dmg() {
