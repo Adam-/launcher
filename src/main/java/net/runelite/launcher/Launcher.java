@@ -95,6 +95,7 @@ public class Launcher
 	private static final String USER_AGENT = "RuneLite/" + LauncherProperties.getVersion();
 	static final String LAUNCHER_EXECUTABLE_NAME_WIN = "RuneLite.exe";
 	static final String LAUNCHER_EXECUTABLE_NAME_OSX = "RuneLite";
+	static boolean nativesLoaded;
 
 	public static void main(String[] args)
 	{
@@ -199,6 +200,8 @@ public class Launcher
 				}
 				return;
 			}
+
+			FilePermissionManager.fixJagexLauncherLogin();
 
 			final Map<String, String> jvmProps = new LinkedHashMap<>();
 			if (settings.scale != null)
@@ -904,6 +907,7 @@ public class Launcher
 		{
 			System.loadLibrary("launcher_" + arch);
 			log.debug("Loaded launcher native launcher_{}", arch);
+			nativesLoaded = true;
 		}
 		catch (Error ex)
 		{
