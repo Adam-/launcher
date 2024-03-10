@@ -42,3 +42,29 @@ extern "C" JNIEXPORT jstring JNICALL Java_net_runelite_launcher_Launcher_regQuer
 
     return env->NewString(reinterpret_cast<const jchar *>(pvData), pcbData / 2 - 1);
 }
+
+extern "C" JNIEXPORT void JNICALL Java_net_runelite_launcher_FilePermissionManager_regDeleteValue(JNIEnv *env, jclass clazz, jstring keyObj, jstring subKeyObj, jstring valueObj) {
+    const jchar *keyString = env->GetStringChars(keyObj, nullptr);
+    const jchar *subKeyString = env->GetStringChars(subKeyObj, nullptr);
+    const jchar *valueString = env->GetStringChars(valueObj, nullptr);
+
+    HKEY hKey = nullptr;
+    if (wcscmp(reinterpret_cast<const wchar_t *>(keyString), L"HKCU") == 0) {
+    	hKey = HKEY_CURRENT_USER;
+    }
+    if (wcscmp(reinterpret_cast<const wchar_t *>(keyString), L"HKLM") == 0) {
+    	hKey = HKEY_LOCAL_MACHINE;
+    }
+	if (hKey) {
+		HKEY hKeyDel = nullptr;
+		if (RegOpenKeyExW(hKey, reinterpret_cast<const wchar_t *>(subKeyString), 0,	KEY_SET_VALUE, &hKeyDel) == ERROR_SUCCESS) {
+			RegDeleteValueW(hKeyDel, reinterpret_cast<const wchar_t *>(valueString));
+			RegCloseKey(hKeyDel);
+		}
+		RegCloseKey(hKey);
+	}
+
+    env->ReleaseStringChars(keyObj, keyString);
+    env->ReleaseStringChars(subKeyObj, subKeyString);
+    env->ReleaseStringChars(valueObj, valueString);
+}
