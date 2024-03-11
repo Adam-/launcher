@@ -102,7 +102,7 @@ public class FilePermissionManager
 	}
 
 	// Requires elevated permissions. Current valid inputs for key are: "HKCU" and "HKLM"
-	private static native void regDeleteValue(String key, String subKey, String value);
+	private static native boolean regDeleteValue(String key, String subKey, String value);
 
 	private static void okOptionPaneCompat()
 	{
