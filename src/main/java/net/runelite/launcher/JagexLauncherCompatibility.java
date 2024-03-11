@@ -27,29 +27,29 @@ package net.runelite.launcher;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import static net.runelite.launcher.Launcher.nativesLoaded;
+import static net.runelite.launcher.Launcher.regDeleteValue;
 
 @Slf4j
-public class FilePermissionManager
+class JagexLauncherCompatibility
 {
 	// this is set to RUNASADMIN
 	private static final String COMPAT_KEY = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\Layers";
 
-	static void fixJagexLauncherLogin()
+	static boolean check()
 	{
 		if (!nativesLoaded)
 		{
 			log.debug("Launcher natives were not loaded. Skipping Jagex Launcher login check.");
-			return;
+			return false;
 		}
 
 		ProcessHandle current = ProcessHandle.current();
 		ProcessHandle parent = current.parent().orElse(null);
 
 		// The only problematic configuration is for us to be running as admin & the Jagex launcher to *not* be running as admin
-		if (!isRunningFromJagexLauncher() || !isProcessElevated(current.pid())
-			|| (parent == null || isProcessElevated(parent.pid())))
+		if (parent == null || !processIsJagexLauncher(parent) || !isProcessElevated(current.pid()) || isProcessElevated(parent.pid()))
 		{
-			return;
+			return false;
 		}
 
 		log.error("RuneLite is running with elevated permissions, but the Jagex launcher is not. Privileged processes " +
@@ -71,17 +71,12 @@ public class FilePermissionManager
 		}
 
 		showErrorDialog(regEdited);
+		return true;
 	}
 
-	private static boolean isRunningFromJagexLauncher()
+	private static boolean processIsJagexLauncher(ProcessHandle process)
 	{
-		// alternatively get the children or descendants of JagexLauncher.exe
-		ProcessHandle parent = ProcessHandle.current().parent().orElse(null);
-		if (parent != null)
-		{
-			return parent.info().command().orElse("").contains("JagexLauncher.exe");
-		}
-		return false;
+		return process.info().command().orElse("").contains("JagexLauncher.exe");
 	}
 
 	private static void showErrorDialog(boolean patched)
@@ -91,7 +86,7 @@ public class FilePermissionManager
 		sb.append("Running RuneLite as an administrator is incompatible with the Jagex launcher.");
 		if (patched)
 		{
-			sb.append(" RuneLite has attempted to fix this problem by changing the compatibility settings of ").append(command);
+			sb.append(" RuneLite has attempted to fix this problem by changing the compatibility settings of ").append(command).append('.');
 			sb.append(" Try running RuneLite again.");
 		}
 		sb.append(" If the problem persists, either run the Jagex launcher as administrator, or change the ")
@@ -101,11 +96,7 @@ public class FilePermissionManager
 		SwingUtilities.invokeLater(() ->
 			new FatalErrorDialog(message)
 				.open());
-		System.exit(-1);
 	}
 
 	private static native boolean isProcessElevated(long pid);
-
-	// Requires elevated permissions. Current valid inputs for key are: "HKCU" and "HKLM"
-	private static native boolean regDeleteValue(String key, String subKey, String value);
 }

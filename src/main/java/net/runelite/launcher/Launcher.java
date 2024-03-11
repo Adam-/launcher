@@ -201,8 +201,6 @@ public class Launcher
 				return;
 			}
 
-			FilePermissionManager.fixJagexLauncherLogin();
-
 			final Map<String, String> jvmProps = new LinkedHashMap<>();
 			if (settings.scale != null)
 			{
@@ -281,6 +279,12 @@ public class Launcher
 					final String value = (String) p.get(key);
 					log.debug("  {}: {}", key, value);
 				}
+			}
+
+			if (JagexLauncherCompatibility.check())
+			{
+				// check() opens an error dialog
+				return;
 			}
 
 			SplashScreen.stage(.05, null, "Downloading bootstrap");
@@ -939,4 +943,7 @@ public class Launcher
 	private static native void setBlacklistedDlls(String[] dlls);
 
 	static native String regQueryString(String subKey, String value);
+
+	// Requires elevated permissions. Current valid inputs for key are: "HKCU" and "HKLM"
+	static native boolean regDeleteValue(String key, String subKey, String value);
 }
