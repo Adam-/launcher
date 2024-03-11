@@ -41,7 +41,7 @@ class JagexLauncherCompatibility
 	{
 		if (!nativesLoaded)
 		{
-			log.debug("Launcher natives were not loaded. Skipping Jagex Launcher login check.");
+			log.debug("Launcher natives were not loaded. Skipping Jagex launcher compatibility check.");
 			return false;
 		}
 
