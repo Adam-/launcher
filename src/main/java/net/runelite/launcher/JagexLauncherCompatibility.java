@@ -57,7 +57,7 @@ class JagexLauncherCompatibility
 			"unable to login. Either run RuneLite as a regular user, or run the Jagex launcher as an administrator.");
 
 		// attempt to fix this by removing the compatibility settings
-		String command = current.info().command().orElse(null);
+		String command = current.info().command().orElse(Launcher.LAUNCHER_EXECUTABLE_NAME_WIN);
 		boolean regEdited = false;
 		if (command != null)
 		{
