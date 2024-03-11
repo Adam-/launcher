@@ -1,22 +1,24 @@
 #include <Windows.h>
 #include <jni.h>
 
-extern "C" JNIEXPORT jboolean JNICALL Java_net_runelite_launcher_FilePermissionManager_isRunningElevated(JNIEnv *env, jclass clazz, jlong pid) {
-	BOOL fRet = false;
-	HANDLE hToken = nullptr;
-	HANDLE handle = OpenProcess(PROCESS_ALL_ACCESS, TRUE, pid);
-	// alternatively use GetCurrentProcess() instead if you'd only want to check the current process
-	if (OpenProcessToken(handle, TOKEN_QUERY, &hToken)) {
-		TOKEN_ELEVATION Elevation;
-		DWORD cbSize = sizeof(TOKEN_ELEVATION);
-		if (GetTokenInformation(hToken, TokenElevation, &Elevation, sizeof(Elevation), &cbSize)) {
-			fRet = Elevation.TokenIsElevated;
-		}
+extern "C" JNIEXPORT jboolean JNICALL Java_net_runelite_launcher_FilePermissionManager_isProcessElevated(JNIEnv *env, jclass clazz, jlong pid) {
+	HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, pid);
+	if (handle == nullptr) {
+		return false;
 	}
-	CloseHandle(handle);
-	if (hToken) {
+
+	BOOL ret = false;
+	HANDLE hToken = nullptr;
+	if (OpenProcessToken(process, TOKEN_QUERY, &hToken)) {
+		TOKEN_ELEVATION elevation;
+		DWORD returnLength;
+		if (GetTokenInformation(hToken, TokenElevation, &elevation, sizeof(elevation), &returnLength)) {
+			ret = elevation.TokenIsElevated;
+		}
 		CloseHandle(hToken);
 	}
-	bool result = fRet == 1 ? true : false;
-	return result;
+	
+	CloseHandle(process);
+
+	return ret;
 }

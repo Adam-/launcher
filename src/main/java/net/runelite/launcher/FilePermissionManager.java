@@ -73,10 +73,10 @@ public class FilePermissionManager
 
 	private static boolean isRunningElevated()
 	{
-		return isRunningElevated(ProcessHandle.current().pid());
+		return isProcessElevated(ProcessHandle.current().pid());
 	}
 
-	private static native boolean isRunningElevated(long pid);
+	private static native boolean isProcessElevated(long pid);
 
 	private static boolean isJagexLauncherElevated()
 	{
@@ -88,7 +88,7 @@ public class FilePermissionManager
 		ProcessHandle parent = ProcessHandle.current().parent().orElse(null);
 		if (parent != null)
 		{
-			boolean result = isRunningElevated(parent.pid());
+			boolean result = isProcessElevated(parent.pid());
 			log.info("Jagex Launcher is running with elevated permissions: " + result);
 			return result;
 		}
