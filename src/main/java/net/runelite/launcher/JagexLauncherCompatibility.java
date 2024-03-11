@@ -26,7 +26,6 @@ package net.runelite.launcher;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import javax.annotation.Nullable;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import static net.runelite.launcher.Launcher.nativesLoaded;
