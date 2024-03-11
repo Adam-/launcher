@@ -24,7 +24,6 @@
  */
 package net.runelite.launcher;
 
-import java.awt.Color;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import static net.runelite.launcher.Launcher.nativesLoaded;
@@ -44,11 +43,12 @@ public class FilePermissionManager
 		}
 
 		ProcessHandle current = ProcessHandle.current();
+		ProcessHandle parent = current.parent().orElse(null);
 
-		if (!isRunningFromJagexLauncher() || !isProcessElevated(current.pid()) || isJagexLauncherElevated())
+		// The only problematic configuration is for us to be running as admin & the Jagex launcher to *not* be running as admin
+		if (!isRunningFromJagexLauncher() || !isProcessElevated(current.pid())
+			|| (parent == null || isProcessElevated(parent.pid())))
 		{
-			// not problematic if not running without the Jagex Launcher, if not running elevated,
-			// or if both the Jagex Launcher and RL Launcher are running with elevated permissions
 			return;
 		}
 
@@ -84,26 +84,9 @@ public class FilePermissionManager
 		return false;
 	}
 
-	private static boolean isJagexLauncherElevated()
-	{
-		if (!isRunningFromJagexLauncher())
-		{
-			return false;
-		}
-
-		ProcessHandle parent = ProcessHandle.current().parent().orElse(null);
-		if (parent != null)
-		{
-			boolean result = isProcessElevated(parent.pid());
-//			log.info("Jagex Launcher is running with elevated permissions: " + result);
-			return result;
-		}
-		return false;
-	}
-
 	private static void showErrorDialog(boolean patched)
 	{
-		String command = ProcessHandle.current().info().command().orElse("RuneLite.exe");
+		String command = ProcessHandle.current().info().command().orElse(Launcher.LAUNCHER_EXECUTABLE_NAME_WIN);
 		var sb = new StringBuilder();
 		sb.append("Running RuneLite as an administrator is incompatible with the Jagex launcher.");
 		if (patched)
@@ -112,7 +95,7 @@ public class FilePermissionManager
 			sb.append(" Try running RuneLite again.");
 		}
 		sb.append(" If the problem persists, either run the Jagex launcher as administrator, or change the ")
-			.append(command).append(" compatibility settings to not run as administrator");
+			.append(command).append(" compatibility settings to not run as administrator.");
 
 		final var message = sb.toString();
 		SwingUtilities.invokeLater(() ->
