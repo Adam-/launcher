@@ -24,6 +24,9 @@
  */
 package net.runelite.launcher;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import javax.annotation.Nullable;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import static net.runelite.launcher.Launcher.nativesLoaded;
@@ -57,14 +60,17 @@ class JagexLauncherCompatibility
 			"unable to login. Either run RuneLite as a regular user, or run the Jagex launcher as an administrator.");
 
 		// attempt to fix this by removing the compatibility settings
-		String command = current.info().command().orElse(Launcher.LAUNCHER_EXECUTABLE_NAME_WIN);
+		String command = current.info().command().orElse(null);
 		boolean regEdited = false;
-		regEdited |= regDeleteValue("HKLM", COMPAT_KEY, command); // all users
-		regEdited |= regDeleteValue("HKCU", COMPAT_KEY, command); // current user
-
-		if (regEdited)
+		if (command != null)
 		{
-			log.info("Application compatibility settings have been unset for {}", command);
+			regEdited |= regDeleteValue("HKLM", COMPAT_KEY, command); // all users
+			regEdited |= regDeleteValue("HKCU", COMPAT_KEY, command); // current user
+
+			if (regEdited)
+			{
+				log.info("Application compatibility settings have been unset for {}", command);
+			}
 		}
 
 		showErrorDialog(regEdited);
@@ -73,12 +79,24 @@ class JagexLauncherCompatibility
 
 	private static boolean processIsJagexLauncher(ProcessHandle process)
 	{
-		return process.info().command().orElse("").contains("JagexLauncher.exe");
+		if (process.info().command().isEmpty())
+		{
+			return false;
+		}
+		return "JagexLauncher.exe".equals(pathFilename(process.info().command().get()));
+	}
+
+	private static String pathFilename(String path)
+	{
+		Path p = Paths.get(path);
+		return p.getFileName().toString();
 	}
 
 	private static void showErrorDialog(boolean patched)
 	{
-		String command = ProcessHandle.current().info().command().orElse(Launcher.LAUNCHER_EXECUTABLE_NAME_WIN);
+		String command = ProcessHandle.current().info().command()
+			.map(JagexLauncherCompatibility::pathFilename)
+			.orElse(Launcher.LAUNCHER_EXECUTABLE_NAME_WIN);
 		var sb = new StringBuilder();
 		sb.append("Running RuneLite as an administrator is incompatible with the Jagex launcher.");
 		if (patched)
