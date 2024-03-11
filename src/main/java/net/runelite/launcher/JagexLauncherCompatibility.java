@@ -59,11 +59,8 @@ class JagexLauncherCompatibility
 		// attempt to fix this by removing the compatibility settings
 		String command = current.info().command().orElse(Launcher.LAUNCHER_EXECUTABLE_NAME_WIN);
 		boolean regEdited = false;
-		if (command != null)
-		{
-			regEdited |= regDeleteValue("HKLM", COMPAT_KEY, command); // all users
-			regEdited |= regDeleteValue("HKCU", COMPAT_KEY, command); // current user
-		}
+		regEdited |= regDeleteValue("HKLM", COMPAT_KEY, command); // all users
+		regEdited |= regDeleteValue("HKCU", COMPAT_KEY, command); // current user
 
 		if (regEdited)
 		{
