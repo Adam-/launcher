@@ -3,7 +3,7 @@
 
 extern "C" JNIEXPORT jboolean JNICALL Java_net_runelite_launcher_FilePermissionManager_isProcessElevated(JNIEnv *env, jclass clazz, jlong pid) {
     HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, pid);
-    if (handle == nullptr) {
+    if (process == nullptr) {
         return false;
     }
 
