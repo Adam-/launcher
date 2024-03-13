@@ -79,11 +79,12 @@ class JagexLauncherCompatibility
 
 	private static boolean processIsJagexLauncher(ProcessHandle process)
 	{
-		if (process.info().command().isEmpty())
+		var info = process.info();
+		if (info.command().isEmpty())
 		{
 			return false;
 		}
-		return "JagexLauncher.exe".equals(pathFilename(process.info().command().get()));
+		return "JagexLauncher.exe".equals(pathFilename(info.command().get()));
 	}
 
 	private static String pathFilename(String path)
