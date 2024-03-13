@@ -985,4 +985,6 @@ public class Launcher
 
 	// Requires elevated permissions. Current valid inputs for key are: "HKCU" and "HKLM"
 	static native boolean regDeleteValue(String key, String subKey, String value);
+
+	static native boolean isProcessElevated(long pid);
 }

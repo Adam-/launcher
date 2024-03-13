@@ -1,8 +1,8 @@
 #include <Windows.h>
 #include <jni.h>
 
-extern "C" JNIEXPORT jboolean JNICALL Java_net_runelite_launcher_JagexLauncherCompatibility_isProcessElevated(JNIEnv *env, jclass clazz, jlong pid) {
-    HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, pid);
+extern "C" JNIEXPORT jboolean JNICALL Java_net_runelite_launcher_Launcher_isProcessElevated(JNIEnv *env, jclass clazz, jlong pid) {
+    HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, (DWORD) pid);
     if (process == nullptr) {
         return false;
     }
@@ -20,5 +20,5 @@ extern "C" JNIEXPORT jboolean JNICALL Java_net_runelite_launcher_JagexLauncherCo
 
     CloseHandle(process);
 
-    return ret;
+    return (jboolean) ret;
 }

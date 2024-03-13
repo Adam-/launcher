@@ -28,6 +28,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
+import static net.runelite.launcher.Launcher.isProcessElevated;
 import static net.runelite.launcher.Launcher.nativesLoaded;
 import static net.runelite.launcher.Launcher.regDeleteValue;
 
@@ -111,6 +112,4 @@ class JagexLauncherCompatibility
 			new FatalErrorDialog(message)
 				.open());
 	}
-
-	private static native boolean isProcessElevated(long pid);
 }

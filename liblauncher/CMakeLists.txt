@@ -18,3 +18,4 @@ elseif (CMAKE_GENERATOR_PLATFORM STREQUAL "ARM64")
     target_link_libraries(launcher ${CMAKE_SOURCE_DIR}/../detours/lib.ARM64/detours.lib)
 endif()
 set_property(TARGET launcher PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded") # multi-threaded statically-linked runtime
+target_compile_options(launcher PRIVATE /W4 /WX /wd4100)
