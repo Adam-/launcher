@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.launcher.beans.Bootstrap;
 
@@ -51,6 +52,32 @@ class PackrConfig
 {
 	// Update the packr config
 	static void updateLauncherArgs(Bootstrap bootstrap, LauncherSettings settings)
+	{
+		patch(config ->
+		{
+			String[] bootstrapVmArgs = getVmArgs(bootstrap);
+			if (bootstrapVmArgs == null || bootstrapVmArgs.length == 0)
+			{
+				log.warn("Launcher args are empty");
+				return;
+			}
+
+			List<String> vmArgs = new ArrayList<>(Arrays.asList(bootstrapVmArgs));
+
+			// java.net.preferIPv4Stack needs to be set prior to libnet *loading* (it is read in net_util.c JNI_OnLoad).
+			// Failure to keep preferIPv4Stack consistent between libnet and java/net results in disagreements over
+			// which socket types can be used.
+			if (settings.ipv4)
+			{
+				vmArgs.add("-Djava.net.preferIPv4Stack=true");
+			}
+
+			config.put("vmArgs", vmArgs);
+			config.put("env", getEnv(bootstrap));
+		});
+	}
+
+	static void patch(Consumer<Map> configConsumer)
 	{
 		var os = OS.getOs();
 		if (os != OS.OSType.Windows && os != OS.OSType.MacOS)
@@ -74,7 +101,7 @@ class PackrConfig
 		}
 		catch (IOException | JsonIOException | JsonSyntaxException e)
 		{
-			log.warn("error deserializing packr vm args!", e);
+			log.warn("error deserializing launcher vm args!", e);
 			return;
 		}
 
@@ -82,29 +109,11 @@ class PackrConfig
 		{
 			// this can't happen when run from the launcher, because an invalid packr config would prevent the launcher itself
 			// from starting. But could happen if the jar launcher was run separately.
-			log.warn("packr config is null!");
+			log.warn("launcher config is null!");
 			return;
 		}
 
-		String[] bootstrapVmArgs = getVmArgs(bootstrap);
-		if (bootstrapVmArgs == null || bootstrapVmArgs.length == 0)
-		{
-			log.warn("Launcher args are empty");
-			return;
-		}
-
-		List<String> vmArgs = new ArrayList<>(Arrays.asList(bootstrapVmArgs));
-
-		// java.net.preferIPv4Stack needs to be set prior to libnet *loading* (it is read in net_util JNI_OnLoad).
-		// Failure to keep preferIPv4Stack consistent between libnet and java/net results in disagreements over
-		// which socket types can be used.
-		if (settings.ipv4)
-		{
-			vmArgs.add("-Djava.net.preferIPv4Stack=true");
-		}
-
-		config.put("vmArgs", vmArgs);
-		config.put("env", getEnv(bootstrap));
+		configConsumer.accept(config);
 
 		try
 		{
@@ -135,7 +144,7 @@ class PackrConfig
 		}
 		catch (IOException e)
 		{
-			log.warn("error updating packr vm args!", e);
+			log.warn("error updating launcher vm args!", e);
 		}
 	}
 

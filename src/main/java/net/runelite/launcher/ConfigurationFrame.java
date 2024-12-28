@@ -32,6 +32,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -234,6 +236,20 @@ public class ConfigurationFrame extends JFrame
 		settings.launchMode = (LaunchMode) comboLaunchMode.getSelectedItem();
 
 		LauncherSettings.saveSettings(settings);
+
+		// IPv4 change requires patching packr config
+		PackrConfig.patch(config ->
+		{
+			List<String> vmArgs = (List) config.computeIfAbsent("vmArgs", k -> new ArrayList<>());
+			if (settings.ipv4)
+			{
+				vmArgs.add("-Djava.net.preferIPv4Stack=true");
+			}
+			else
+			{
+				vmArgs.remove("-Djava.net.preferIPv4Stack=true");
+			}
+		});
 
 		log.info("Updated launcher configuration:" + System.lineSeparator() + "{}", settings.configurationStr());
 
