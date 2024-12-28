@@ -53,27 +53,29 @@ class PackrConfig
 	// Update the packr config
 	static void updateLauncherArgs(Bootstrap bootstrap, LauncherSettings settings)
 	{
+		String[] bootstrapVmArgs = getVmArgs(bootstrap);
+		if (bootstrapVmArgs == null || bootstrapVmArgs.length == 0)
+		{
+			log.warn("Launcher args are empty");
+			return;
+		}
+
+		List<String> vmArgs = new ArrayList<>(Arrays.asList(bootstrapVmArgs));
+
+		// java.net.preferIPv4Stack needs to be set prior to libnet *loading* (it is read in net_util.c JNI_OnLoad).
+		// Failure to keep preferIPv4Stack consistent between libnet and java/net results in disagreements over
+		// which socket types can be used.
+		if (settings.ipv4)
+		{
+			vmArgs.add("-Djava.net.preferIPv4Stack=true");
+		}
+
+		Map<String, String> env = getEnv(bootstrap);
+
 		patch(config ->
 		{
-			String[] bootstrapVmArgs = getVmArgs(bootstrap);
-			if (bootstrapVmArgs == null || bootstrapVmArgs.length == 0)
-			{
-				log.warn("Launcher args are empty");
-				return;
-			}
-
-			List<String> vmArgs = new ArrayList<>(Arrays.asList(bootstrapVmArgs));
-
-			// java.net.preferIPv4Stack needs to be set prior to libnet *loading* (it is read in net_util.c JNI_OnLoad).
-			// Failure to keep preferIPv4Stack consistent between libnet and java/net results in disagreements over
-			// which socket types can be used.
-			if (settings.ipv4)
-			{
-				vmArgs.add("-Djava.net.preferIPv4Stack=true");
-			}
-
 			config.put("vmArgs", vmArgs);
-			config.put("env", getEnv(bootstrap));
+			config.put("env", env);
 		});
 	}
 
