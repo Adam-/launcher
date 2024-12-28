@@ -314,7 +314,7 @@ public class Launcher
 			Bootstrap bootstrap;
 			try
 			{
-				bootstrap = fetchBootstrap();
+				bootstrap = getBootstrap();
 			}
 			catch (IOException | VerificationException | CertificateException | SignatureException | InvalidKeyException | NoSuchAlgorithmException ex)
 			{
@@ -468,7 +468,7 @@ public class Launcher
 		}
 	}
 
-	private static Bootstrap fetchBootstrap() throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeyException, SignatureException, VerificationException
+	private static Bootstrap getBootstrap() throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeyException, SignatureException, VerificationException
 	{
 		HttpRequest bootstrapReq = HttpRequest.newBuilder()
 			.uri(URI.create(LauncherProperties.getBootstrap()))
@@ -931,7 +931,7 @@ public class Launcher
 		Bootstrap bootstrap;
 		try
 		{
-			bootstrap = fetchBootstrap();
+			bootstrap = getBootstrap();
 		}
 		catch (IOException | VerificationException | CertificateException | SignatureException | InvalidKeyException | NoSuchAlgorithmException ex)
 		{
