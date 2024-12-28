@@ -39,6 +39,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.launcher.beans.Bootstrap;
@@ -47,7 +50,7 @@ import net.runelite.launcher.beans.Bootstrap;
 class PackrConfig
 {
 	// Update the packr config
-	static void updateLauncherArgs(Bootstrap bootstrap)
+	static void updateLauncherArgs(Bootstrap bootstrap, LauncherSettings settings)
 	{
 		var os = OS.getOs();
 		if (os != OS.OSType.Windows && os != OS.OSType.MacOS)
@@ -83,14 +86,24 @@ class PackrConfig
 			return;
 		}
 
-		String[] argsArr = getArgs(bootstrap);
-		if (argsArr == null || argsArr.length == 0)
+		String[] bootstrapVmArgs = getVmArgs(bootstrap);
+		if (bootstrapVmArgs == null || bootstrapVmArgs.length == 0)
 		{
 			log.warn("Launcher args are empty");
 			return;
 		}
 
-		config.put("vmArgs", argsArr);
+		List<String> vmArgs = new ArrayList<>(Arrays.asList(bootstrapVmArgs));
+
+		// java.net.preferIPv4Stack needs to be set prior to libnet *loading* (it is read in net_util JNI_OnLoad).
+		// Failure to keep preferIPv4Stack consistent between libnet and java/net results in disagreements over
+		// which socket types can be used.
+		if (settings.ipv4)
+		{
+			vmArgs.add("-Djava.net.preferIPv4Stack=true");
+		}
+
+		config.put("vmArgs", vmArgs);
 		config.put("env", getEnv(bootstrap));
 
 		try
@@ -117,6 +130,8 @@ class PackrConfig
 				log.debug("atomic move not supported", ex);
 				Files.move(tmpFile.toPath(), configFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 			}
+
+			log.debug("patched packr config");
 		}
 		catch (IOException e)
 		{
@@ -124,7 +139,7 @@ class PackrConfig
 		}
 	}
 
-	private static String[] getArgs(Bootstrap bootstrap)
+	private static String[] getVmArgs(Bootstrap bootstrap)
 	{
 		return Launcher.isJava17() ? getArgsJvm17(bootstrap) : getArgsJvm11(bootstrap);
 	}

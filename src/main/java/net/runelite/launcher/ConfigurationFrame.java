@@ -57,6 +57,7 @@ public class ConfigurationFrame extends JFrame
 	private final JCheckBox chkboxSkipTlsVerification;
 	private final JCheckBox chkboxNoUpdates;
 	private final JCheckBox chkboxSafemode;
+	private final JCheckBox chkboxIpv4;
 	private final JTextField txtScale;
 	private final JTextArea txtClientArguments;
 	private final JTextArea txtJvmArguments;
@@ -117,6 +118,12 @@ public class ConfigurationFrame extends JFrame
 			"Safe mode",
 			"Launches the client in safe mode",
 			Boolean.TRUE.equals(settings.safemode)
+		));
+
+		topPanel.add(chkboxIpv4 = checkbox(
+			"IPv4",
+			"Prefer IPv4 over IPv6",
+			Boolean.TRUE.equals(settings.ipv4)
 		));
 
 		pane.add(topPanel);
@@ -198,6 +205,7 @@ public class ConfigurationFrame extends JFrame
 		settings.skipTlsVerification = chkboxSkipTlsVerification.isSelected();
 		settings.noupdates = chkboxNoUpdates.isSelected();
 		settings.safemode = chkboxSafemode.isSelected();
+		settings.ipv4 = chkboxIpv4.isSelected();
 
 		var t = txtScale.getText();
 		settings.scale = null;
