@@ -26,8 +26,6 @@ package net.runelite.launcher;
 
 import sun.security.provider.certpath.AdjacencyList;
 import sun.security.provider.certpath.SunCertPathBuilderException;
-import sun.security.validator.ValidatorException;
-
 class CertPathExtractor
 {
 	static String extract(Throwable ex)
