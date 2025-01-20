@@ -1,12 +1,3 @@
-target
-nbactions.xml
-nb-configuration.xml
-/nbproject/
-project.properties
-*.iml
-.idea/
-.project
-.settings/
-.classpath
-dependency-reduced-pom.xml
+build
+.idea
 RuneLiteSetup*.exe
