@@ -76,6 +76,7 @@ jobs:
         java-version: 11
         distribution: temurin
         cache: gradle
+    - run: curl https://plugins.gradle.org/m2/org/springframework/spring-framework-bom/5.3.24/spring-framework-bom-5.3.24.pom -L -v
     - name: build
       run: ./gradlew build -P RUNELITE_BUILD=$RUNELITE_PROFILE
     - name: linux-x64
