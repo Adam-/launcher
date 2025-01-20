@@ -3,7 +3,7 @@
 set -e
 
 echo Launcher sha256sum
-sha256sum build/libs/RuneLite.jar
+shasum -a 256 build/libs/RuneLite.jar
 
 APPBASE="build/macos-aarch64/RuneLite.app"
 

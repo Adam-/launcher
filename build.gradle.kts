@@ -117,7 +117,7 @@ tasks.register<Copy>("filterAppimage") {
 
 tasks.register<Copy>("filterInnosetup") {
     from("innosetup") {
-        include("*.iss")
+        include("*.iss", "*.pas")
     }
     into("build/filtered-resources")
     expand("project" to project) {
