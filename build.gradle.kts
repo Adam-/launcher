@@ -58,8 +58,9 @@ dependencies {
     testImplementation(libs.junit.junit)
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
+    options.release.set(11)
 }
 
 tasks.withType<AbstractArchiveTask>().configureEach {
@@ -69,7 +70,6 @@ tasks.withType<AbstractArchiveTask>().configureEach {
 
 sourceSets.create("java8") {
     java.srcDirs("src/main/java8")
-
 }
 
 tasks.jar {
@@ -78,12 +78,9 @@ tasks.jar {
 }
 
 tasks.getByName<JavaCompile>("compileJava8Java") {
+    options.release.unset()
     sourceCompatibility = "1.8"
     targetCompatibility = "1.8"
-}
-
-tasks.withType<JavaCompile>() {
-    options.encoding = "UTF-8"
 }
 
 tasks {
