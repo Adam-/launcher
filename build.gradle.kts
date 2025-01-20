@@ -91,9 +91,9 @@ tasks {
         filesMatching("**/*.properties") {
             val props = if (project.findProperty("RUNELITE_BUILD") as? String == "runelite")
                 arrayOf("runelite_net" to "runelite.net",
-                    "runelite_128" to "runelite_128.png",
-                    "runelite_splash" to "runelite_splash.png")
-                else arrayOf("runelite_net" to "",
+                        "runelite_128" to "runelite_128.png",
+                        "runelite_splash" to "runelite_splash.png")
+            else arrayOf("runelite_net" to "",
                     "runelite_128" to "",
                     "runelite_splash" to "")
             expand(
@@ -117,12 +117,19 @@ tasks.register<Copy>("filterAppimage") {
 
 tasks.register<Copy>("filterInnosetup") {
     from("innosetup") {
-        include("*.iss", "*.pas")
+        include("*.iss")
     }
     into("build/filtered-resources")
     expand("project" to project) {
         escapeBackslash = true
     }
+}
+
+tasks.register<Copy>("copyInstallerScripts") {
+    from("innosetup") {
+        include("*.pas")
+    }
+    into("build/filtered-resources")
 }
 
 tasks.register<Copy>("filterOsx") {
