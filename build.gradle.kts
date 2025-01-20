@@ -30,8 +30,8 @@ plugins {
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
+    maven { url = uri("https://repo.runelite.net") }
 }
 
 group = "net.runelite"
