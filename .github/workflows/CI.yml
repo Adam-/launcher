@@ -77,7 +77,7 @@ jobs:
         distribution: temurin
         cache: gradle
     - name: build
-      run: ./gradlew build --debug -P RUNELITE_BUILD=$RUNELITE_PROFILE
+      run: ./gradlew build -P RUNELITE_BUILD=$RUNELITE_PROFILE
     - name: linux-x64
       run: ./build-linux-x86_64.sh
     - name: linux-aarch64
