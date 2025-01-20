@@ -129,6 +129,7 @@ tasks.register<Copy>("copyInstallerScripts") {
     from("innosetup") {
         include("*.pas")
     }
+    // not really filtered, but need to be put next to the filtered installer scripts so they can pick them up
     into("build/filtered-resources")
 }
 
@@ -151,5 +152,5 @@ tasks.shadowJar {
 }
 
 tasks.named("build") {
-    dependsOn("filterAppimage", "filterInnosetup", "filterOsx", tasks.shadowJar)
+    dependsOn("filterAppimage", "filterInnosetup", "copyInstallerScripts", "filterOsx", tasks.shadowJar)
 }
