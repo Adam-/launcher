@@ -65,7 +65,7 @@ bool loadJNIFunctions(GetDefaultJavaVMInitArgs* getDefaultJavaVMInitArgs, Create
 const char* getExecutablePath(const char* argv0) {
 
     static char buf[PATH_MAX];
-    uint32_t size = sizeof(buf);
+    size_t size = sizeof(buf);
 
 	if (readlink("/proc/self/exe", buf, size) == -1) {
         return argv0;
