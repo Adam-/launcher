@@ -6,7 +6,7 @@ echo Launcher sha256sum
 sha256sum build/libs/RuneLite.jar
 
 pushd native
-cmake -B build-aarch64 .
+cmake -DCMAKE_TOOLCHAIN_FILE=arm64-linux-gcc.cmake -B build-aarch64 .
 cmake --build build-aarch64 --config Release
 popd
 
@@ -48,14 +48,12 @@ ln -s RuneLite AppRun
 chmod 755 RuneLite
 popd
 
-curl -z appimagetool-aarch64.AppImage -o appimagetool-aarch64.AppImage -L https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-aarch64.AppImage
+curl -z appimagetool-x86_64.AppImage -o appimagetool-x86_64.AppImage -L https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
 curl -z runtime-aarch64 -o runtime-aarch64 -L https://github.com/AppImage/type2-runtime/releases/download/continuous/runtime-aarch64
 
-chmod +x appimagetool-aarch64.AppImage
+chmod +x appimagetool-x86_64.AppImage
 
-./appimagetool-aarch64.AppImage \
+./appimagetool-x86_64.AppImage \
 	--runtime-file runtime-aarch64 \
 	build/linux-aarch64/ \
 	RuneLite-aarch64.AppImage
-
-./RuneLite-aarch64.AppImage --help
