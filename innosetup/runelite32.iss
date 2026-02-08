@@ -5,7 +5,7 @@ UninstallDisplayName=RuneLite
 AppVersion=${project.version}
 AppSupportURL=https://runelite.net/
 DefaultDirName={localappdata}\RuneLite
-WizardStyle=modern dynamic
+WizardStyle=dynamic
 
 ; ~30 mb for the repo the launcher downloads
 ExtraDiskSpaceRequired=30000000
