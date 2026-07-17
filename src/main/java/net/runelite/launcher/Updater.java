@@ -162,7 +162,9 @@ class Updater
 			// point of no return
 			Path appimagePath = Path.of(appimage);
 			log.debug("Installing new appinage to {}", appimage);
+			var permissions = Files.getPosixFilePermissions(appimagePath);
 			Files.move(file.toAbsolutePath(), appimagePath, StandardCopyOption.REPLACE_EXISTING);
+			Files.setPosixFilePermissions(appimagePath, permissions);
 
 			log.debug("Done! Launching...");
 
