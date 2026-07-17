@@ -113,8 +113,6 @@ class Updater
 
 		log.debug("Running from appimage");
 
-		// launcherSettings have the OptionSet applied to them, so we don't want to write them back to disk.
-		// Load a copy for updating the last update attempt
 		var settings = LauncherSettings.loadSettings();
 		if (checkBackoff(settings, newestUpdate))
 		{
@@ -122,7 +120,6 @@ class Updater
 		}
 
 		// check if rollout allows this update
-		// there is no installer on macos to write install_id, so just use random()
 		if (newestUpdate.getRollout() > 0. && Math.random() > newestUpdate.getRollout())
 		{
 			log.info("Skipping update {} due to rollout", newestUpdate.getVersion());
