@@ -162,7 +162,7 @@ class Updater
 			// point of no return
 			Path appimagePath = Path.of(appimage);
 			log.debug("Installing new appinage to {}", appimage);
-			Files.move(file.getFileName(), appimagePath, StandardCopyOption.REPLACE_EXISTING);
+			Files.move(file.toAbsolutePath(), appimagePath, StandardCopyOption.REPLACE_EXISTING);
 
 			log.debug("Done! Launching...");
 
