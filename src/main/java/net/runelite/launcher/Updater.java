@@ -69,21 +69,40 @@ class Updater
 
 	static void update(Bootstrap bootstrap, LauncherSettings launcherSettings, String[] args)
 	{
+		var update = findAvailableUpdate(bootstrap);
+		if (update == null)
+		{
+			return;
+		}
+
+		final boolean noupdate = launcherSettings.isNoupdates();
+		if (noupdate)
+		{
+			log.info("Skipping update {} due to noupdate being set", update.getVersion());
+			return;
+		}
+
+		if (System.getenv("RUNELITE_UPGRADE") != null)
+		{
+			log.info("Skipping update {} due to launching from an upgrade", update.getVersion());
+			return;
+		}
+
 		switch (OS.getOs())
 		{
 			case Windows:
-				updateWindows(bootstrap, launcherSettings, args);
+				updateWindows(update, args);
 				break;
 			case MacOS:
-				updateMacos(bootstrap, launcherSettings, args);
+				updateMacos(update, args);
 				break;
 			case Linux:
-				updateLinux(bootstrap, launcherSettings, args);
+				updateLinux(update, args);
 				break;
 		}
 	}
 
-	private static void updateLinux(Bootstrap bootstrap, LauncherSettings launcherSettings, String[] args)
+	private static void updateLinux(Update newestUpdate, String[] args)
 	{
 		var appimage = System.getenv("APPIMAGE");
 		if (appimage == null)
@@ -93,25 +112,6 @@ class Updater
 		}
 
 		log.debug("Running from appimage");
-
-		var newestUpdate = findAvailableUpdate(bootstrap);
-		if (newestUpdate == null)
-		{
-			return;
-		}
-
-		final boolean noupdate = launcherSettings.isNoupdates();
-		if (noupdate)
-		{
-			log.info("Skipping update {} due to noupdate being set", newestUpdate.getVersion());
-			return;
-		}
-
-		if (System.getenv("RUNELITE_UPGRADE") != null)
-		{
-			log.info("Skipping update {} due to launching from an upgrade", newestUpdate.getVersion());
-			return;
-		}
 
 		// launcherSettings have the OptionSet applied to them, so we don't want to write them back to disk.
 		// Load a copy for updating the last update attempt
@@ -181,7 +181,7 @@ class Updater
 		}
 	}
 
-	private static void updateMacos(Bootstrap bootstrap, LauncherSettings launcherSettings, String[] args)
+	private static void updateMacos(Update newestUpdate, String[] args)
 	{
 		ProcessHandle current = ProcessHandle.current();
 		var command = current.info().command();
@@ -209,27 +209,6 @@ class Updater
 
 		log.debug("Running from installer");
 
-		var newestUpdate = findAvailableUpdate(bootstrap);
-		if (newestUpdate == null)
-		{
-			return;
-		}
-
-		final boolean noupdate = launcherSettings.isNoupdates();
-		if (noupdate)
-		{
-			log.info("Skipping update {} due to noupdate being set", newestUpdate.getVersion());
-			return;
-		}
-
-		if (System.getenv("RUNELITE_UPGRADE") != null)
-		{
-			log.info("Skipping update {} due to launching from an upgrade", newestUpdate.getVersion());
-			return;
-		}
-
-		// launcherSettings have the OptionSet applied to them, so we don't want to write them back to disk.
-		// Load a copy for updating the last update attempt
 		var settings = LauncherSettings.loadSettings();
 		if (checkBackoff(settings, newestUpdate))
 		{
@@ -375,7 +354,7 @@ class Updater
 		return null;
 	}
 
-	private static void updateWindows(Bootstrap bootstrap, LauncherSettings launcherSettings, String[] args)
+	private static void updateWindows(Update newestUpdate, String[] args)
 	{
 		ProcessHandle current = ProcessHandle.current();
 		if (current.info().command().isEmpty())
@@ -407,27 +386,6 @@ class Updater
 
 		log.debug("Running from installer");
 
-		var newestUpdate = findAvailableUpdate(bootstrap);
-		if (newestUpdate == null)
-		{
-			return;
-		}
-
-		final boolean noupdate = launcherSettings.isNoupdates();
-		if (noupdate)
-		{
-			log.info("Skipping update {} due to noupdate being set", newestUpdate.getVersion());
-			return;
-		}
-
-		if (System.getenv("RUNELITE_UPGRADE") != null)
-		{
-			log.info("Skipping update {} due to launching from an upgrade", newestUpdate.getVersion());
-			return;
-		}
-
-		// launcherSettings have the OptionSet applied to them, so we don't want to write them back to disk.
-		// Load a copy for updating the last update attempt
 		var settings = LauncherSettings.loadSettings();
 		if (checkBackoff(settings, newestUpdate))
 		{
