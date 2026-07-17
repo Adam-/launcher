@@ -538,7 +538,7 @@ public class Launcher
 
 		if (!s.verify(signature))
 		{
-//			throw new VerificationException("Unable to verify bootstrap signature");
+			throw new VerificationException("Unable to verify bootstrap signature");
 		}
 
 		Gson g = new Gson();
