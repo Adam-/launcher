@@ -101,9 +101,6 @@ jobs:
   macos:
     runs-on: macos-15-intel
     steps:
-    - uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
     - uses: actions/checkout@v7
       with:
         submodules: 'true'
@@ -115,16 +112,7 @@ jobs:
         cache: gradle
     - name: build
       run: ./gradlew build -P RUNELITE_BUILD=$RUNELITE_PROFILE
-    - name: clone create-dmg
-      run: git clone https://github.com/runelite/create-dmg -b runelite-1.0
-    - name: build create-dmg
-      run: |
-        set -e
-        cd create-dmg
-        npm install
-        ln -s cli.js create-dmg
-        chmod +x create-dmg
-    - run: echo create-dmg >> $GITHUB_PATH
+    - run: echo tools/create-dmg >> $GITHUB_PATH
     - name: macos-x64
       run: ./build-osx-x64.sh --build --dmg
     - name: macos-aarch64
