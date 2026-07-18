@@ -195,10 +195,12 @@ class Updater
 		// despite the executable really being at /Applications/RuneLite.app/Contents/MacOS/RuneLite
 		runeliteBin = runeliteBin.normalize()
 			.resolveSibling(Path.of("..", "MacOS", runeliteBin.getFileName().toString()))
-			.normalize();
+			.normalize()
+			.toAbsolutePath();
 
 		Path appDir = runeliteBin.resolve(Path.of("..", "..", ".."))
-			.normalize();
+			.normalize()
+			.toAbsolutePath();
 
 		log.debug("runeliteBin: {} appDir: {}", runeliteBin, appDir);
 
