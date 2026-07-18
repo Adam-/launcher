@@ -58,7 +58,7 @@ dmg() {
     SIGNING_IDENTITY="Developer ID Application"
     codesign -f -s "${SIGNING_IDENTITY}" --entitlements osx/signing.entitlements --options runtime $APPBASE || true
 
-    ./create-dmg/create-dmg \
+    ./tools/create-dmg/create-dmg \
       --volname RuneLite \
       --volicon osx/runelite.icns \
       --window-size 660 400 \
