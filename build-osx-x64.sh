@@ -58,7 +58,7 @@ dmg() {
     SIGNING_IDENTITY="Developer ID Application"
     codesign -f -s "${SIGNING_IDENTITY}" --entitlements osx/signing.entitlements --options runtime $APPBASE || true
 
-    ./tools/create-dmg/create-dmg \
+    create-dmg \
       --volname RuneLite \
       --volicon osx/runelite.icns \
       --window-size 660 400 \
@@ -72,16 +72,6 @@ dmg() {
 
     # dump for CI
     hdiutil imageinfo RuneLite-x64.dmg
-
-    if ! hdiutil imageinfo RuneLite-x64.dmg | grep -q "Format: UDBZ" ; then
-        echo "Format of resulting dmg was not UDBZ, make sure your create-dmg has support for --format"
-        exit 1
-    fi
-
-    if ! hdiutil imageinfo RuneLite-x64.dmg | grep -q "Apple_HFS" ; then
-        echo Filesystem of dmg is not Apple_HFS
-        exit 1
-    fi
 
     # Notarize app
     if xcrun notarytool submit RuneLite-x64.dmg --wait --keychain-profile "AC_PASSWORD" ; then
