@@ -119,7 +119,7 @@ jobs:
       run: ./build-osx-aarch64.sh --build --dmg
     # tar app to keep permissions correct
     - name: tar app
-      run: tar -cf app.tar build/macos-x64/RuneLite.app build/macos-aarch64/RuneLite.app build-osx-x64.sh build-osx-aarch64.sh osx/signing.entitlements
+      run: tar -cf app.tar build/macos-x64/RuneLite.app build/macos-aarch64/RuneLite.app build-osx-x64.sh build-osx-aarch64.sh osx/signing.entitlements osx/runelite.icns
     - uses: actions/upload-artifact@v7
       with:
         name: macos-dmg
