@@ -2,6 +2,8 @@
 
 set -e
 
+PATH=$PATH:tools/create-dmg
+
 APPBASE="build/macos-aarch64/RuneLite.app"
 
 build() {
