@@ -11,9 +11,9 @@ WIN_AARCH64_RELEASE=jdk-21.0.11+10
 WIN_AARCH64_CHKSUM=22e2c2b83a7dc5653c938c9a49d87ad52a1faa38f7f3d80a96ceb0795ab99637
 WIN_AARCH64_LINK=https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-jre_aarch64_windows_hotspot_21.0.11_10.zip
 # mac x64
-MAC_AMD64_RELEASE=jdk-17.0.19+10
-MAC_AMD64_CHKSUM=91bbd07b9c65d9ecbe1fa0081b3c1ad549ed34ed21085a72fdb76598a740b54c
-MAC_AMD64_LINK=https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.19%2B10/OpenJDK17U-jre_x64_mac_hotspot_17.0.19_10.tar.gz
+MAC_AMD64_RELEASE=jdk-17.0.17+10
+MAC_AMD64_CHKSUM=0fe26252c258ec239ea6d39a6a1f42b75025bff0d237e9ab3acb4782cef29439
+MAC_AMD64_LINK=https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.17%2B10/OpenJDK17U-jre_x64_mac_hotspot_17.0.17_10.tar.gz
 # mac aarch64
 MAC_AARCH64_RELEASE=jdk-17.0.19+10
 MAC_AARCH64_CHKSUM=cef790b404cf168fd1a8a7abc5054fbb442c7d4bfe390cceccfe3f64b9b776a9

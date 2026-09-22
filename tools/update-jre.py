@@ -43,7 +43,8 @@ fetch_jre('WIN64_', ver17, 'x64', 'windows')
 # https://github.com/adoptium/temurin-build/issues/4319
 fetch_jre('WIN32_', '17.0.17+10', 'x86', 'windows')
 fetch_jre('WIN_AARCH64_', ver21, 'aarch64', 'windows')
-fetch_jre('MAC_AMD64_', ver17, 'x64', 'mac')
+# Keep macOS x64 on 17.0.17 so the bundled JRE supports the 10.12 deployment target.
+fetch_jre('MAC_AMD64_', '17.0.17+10', 'x64', 'mac')
 fetch_jre('MAC_AARCH64_', ver17, 'aarch64', 'mac')
 fetch_jre('LINUX_AMD64_', ver17, 'x64', 'linux')
 fetch_jre('LINUX_AARCH64_', ver17, 'aarch64', 'linux')

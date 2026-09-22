@@ -11,7 +11,7 @@ build() {
     shasum -a 256 build/libs/RuneLite.jar
 
     pushd native
-    cmake -DCMAKE_OSX_ARCHITECTURES=arm64 -B build-aarch64 .
+    cmake -DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0 -B build-aarch64 .
     cmake --build build-aarch64 --config Release
     popd
 
