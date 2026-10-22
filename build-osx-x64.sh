@@ -15,16 +15,10 @@ build() {
     cmake --build build-x64 --config Release
     popd
 
-    source .jdk-versions.sh
+    source util.sh
 
     rm -rf build/macos-x64
     mkdir -p build/macos-x64
-
-    if ! [ -f mac64_jre.tar.gz ] ; then
-        curl -Lo mac64_jre.tar.gz $MAC_AMD64_LINK
-    fi
-
-    echo "$MAC_AMD64_CHKSUM  mac64_jre.tar.gz" | shasum -c
 
     mkdir -p $APPBASE/Contents/{MacOS,Resources}
 
@@ -34,9 +28,7 @@ build() {
     cp build/filtered-resources/Info.plist $APPBASE/Contents/
     cp osx/runelite.icns $APPBASE/Contents/Resources/icons.icns
 
-    tar zxf mac64_jre.tar.gz
-    mkdir $APPBASE/Contents/Resources/jre
-    mv $MAC_AMD64_RELEASE-jre/Contents/Home/* $APPBASE/Contents/Resources/jre
+    download_jre MAC_AMD64 mac64_jre.tar.gz $APPBASE/Contents/Resources/jre
 
     echo Setting world execute permissions on RuneLite
     pushd $APPBASE
