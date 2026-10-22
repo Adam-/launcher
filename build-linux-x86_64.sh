@@ -12,16 +12,10 @@ popd
 
 umask 022
 
-source .jdk-versions.sh
+source util.sh
 
 rm -rf build/linux-x64
 mkdir -p build/linux-x64
-
-if ! [ -f linux64_jre.tar.gz ] ; then
-    curl -Lo linux64_jre.tar.gz $LINUX_AMD64_LINK
-fi
-
-echo "$LINUX_AMD64_CHKSUM linux64_jre.tar.gz" | sha256sum -c
 
 # Note: Host umask may have checked out this directory with g/o permissions blank
 chmod -R u=rwX,go=rX appimage
@@ -36,8 +30,7 @@ cp appimage/runelite.png build/linux-x64/
 mkdir -p build/linux-x64/usr/share/icons/hicolor/128x128/apps/
 cp appimage/runelite.png build/linux-x64/usr/share/icons/hicolor/128x128/apps/
 
-tar zxf linux64_jre.tar.gz
-mv $LINUX_AMD64_RELEASE-jre build/linux-x64/jre
+download_jre LINUX_AMD64 linux64_jre.tar.gz build/linux-x64/jre
 
 pushd build/linux-x64/
 # Symlink AppRun -> RuneLite
