@@ -30,6 +30,12 @@ build() {
 
     download_jre MAC_AMD64 mac64_jre.tar.gz $APPBASE/Contents/Resources/jre
 
+    # Refresh certificate data from the newer aarch64 JRE.
+    CERTS_TMPDIR=$(mktemp -d)
+    download_jre MAC_AARCH64 mac_aarch64_jre.tar.gz "$CERTS_TMPDIR/jre"
+    cp "$CERTS_TMPDIR/jre/lib/security/cacerts" "$CERTS_TMPDIR/jre/lib/security/blocked.certs" $APPBASE/Contents/Resources/jre/lib/security/
+    rm -rf "$CERTS_TMPDIR"
+
     echo Setting world execute permissions on RuneLite
     pushd $APPBASE
     chmod g+x,o+x Contents/MacOS/RuneLite

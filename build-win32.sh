@@ -25,6 +25,12 @@ cp liblauncher/build32/Release/launcher_x86.dll build/win-x86/
 
 download_jre WIN32 win32_jre.zip build/win-x86/jre
 
+# Refresh certificate data from the newer x64 JRE.
+CERTS_TMPDIR=$(mktemp -d)
+download_jre WIN64 win64_jre.zip "$CERTS_TMPDIR/jre"
+cp "$CERTS_TMPDIR/jre/lib/security/cacerts" "$CERTS_TMPDIR/jre/lib/security/blocked.certs" build/win-x86/jre/lib/security/
+rm -rf "$CERTS_TMPDIR"
+
 echo RuneLite.exe 32bit sha256sum
 sha256sum build/win-x86/RuneLite.exe
 
