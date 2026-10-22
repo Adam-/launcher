@@ -40,9 +40,6 @@ tar zxf linux_aarch64_jre.tar.gz
 mv $LINUX_AMD64_RELEASE-jre build/linux-aarch64/jre
 
 pushd build/linux-aarch64
-mkdir -p jre/lib/amd64/server/
-ln -s ../../server/libjvm.so jre/lib/amd64/server/ # packr looks for libjvm at this hardcoded path
-
 # Symlink AppRun -> RuneLite
 ln -s RuneLite AppRun
 
