@@ -37,7 +37,7 @@ mkdir -p build/linux-aarch64/usr/share/icons/hicolor/128x128/apps/
 cp appimage/runelite.png build/linux-aarch64/usr/share/icons/hicolor/128x128/apps/
 
 tar zxf linux_aarch64_jre.tar.gz
-mv $LINUX_AMD64_RELEASE-jre build/linux-aarch64/jre
+mv $LINUX_AARCH64_RELEASE-jre build/linux-aarch64/jre
 
 pushd build/linux-aarch64
 # Symlink AppRun -> RuneLite
