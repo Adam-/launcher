@@ -2,6 +2,21 @@
 
 source .jdk-versions.sh
 
+update_jre_cacerts() {
+    local prefix="$1"
+    local archive="$2"
+    local target="$3/lib/security"
+    local certs_tmpdir
+    certs_tmpdir=$(mktemp -d)
+    download_jre "$prefix" "$archive" "$certs_tmpdir/jre"
+    keytool -list -keystore "$target/cacerts" -storepass changeit > "$certs_tmpdir/old-cacerts.txt"
+    keytool -list -keystore "$certs_tmpdir/jre/lib/security/cacerts" -storepass changeit > "$certs_tmpdir/new-cacerts.txt"
+    diff -u "$certs_tmpdir/old-cacerts.txt" "$certs_tmpdir/new-cacerts.txt" || [ "$?" -eq 1 ]
+    diff -u "$target/blocked.certs" "$certs_tmpdir/jre/lib/security/blocked.certs" || [ "$?" -eq 1 ]
+    cp "$certs_tmpdir/jre/lib/security/cacerts" "$certs_tmpdir/jre/lib/security/blocked.certs" "$target/"
+    rm -rf "$certs_tmpdir"
+}
+
 download_jre() {
     local prefix="$1"
     local archive="$2"

@@ -30,6 +30,8 @@ build() {
 
     download_jre MAC_AMD64 mac64_jre.tar.gz $APPBASE/Contents/Resources/jre
 
+    update_jre_cacerts MAC_AARCH64 mac_aarch64_jre.tar.gz "$APPBASE/Contents/Resources/jre"
+
     echo Setting world execute permissions on RuneLite
     pushd $APPBASE
     chmod g+x,o+x Contents/MacOS/RuneLite

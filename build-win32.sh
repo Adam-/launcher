@@ -25,6 +25,8 @@ cp liblauncher/build32/Release/launcher_x86.dll build/win-x86/
 
 download_jre WIN32 win32_jre.zip build/win-x86/jre
 
+update_jre_cacerts WIN64 win64_jre.zip build/win-x86/jre
+
 echo RuneLite.exe 32bit sha256sum
 sha256sum build/win-x86/RuneLite.exe
 
