@@ -28,6 +28,10 @@ download_jre WIN32 win32_jre.zip build/win-x86/jre
 # Refresh certificate data from the newer x64 JRE.
 CERTS_TMPDIR=$(mktemp -d)
 download_jre WIN64 win64_jre.zip "$CERTS_TMPDIR/jre"
+keytool -list -keystore build/win-x86/jre/lib/security/cacerts -storepass changeit > "$CERTS_TMPDIR/old-cacerts.txt"
+keytool -list -keystore "$CERTS_TMPDIR/jre/lib/security/cacerts" -storepass changeit > "$CERTS_TMPDIR/new-cacerts.txt"
+diff -u "$CERTS_TMPDIR/old-cacerts.txt" "$CERTS_TMPDIR/new-cacerts.txt" || [ "$?" -eq 1 ]
+diff -u build/win-x86/jre/lib/security/blocked.certs "$CERTS_TMPDIR/jre/lib/security/blocked.certs" || [ "$?" -eq 1 ]
 cp "$CERTS_TMPDIR/jre/lib/security/cacerts" "$CERTS_TMPDIR/jre/lib/security/blocked.certs" build/win-x86/jre/lib/security/
 rm -rf "$CERTS_TMPDIR"
 

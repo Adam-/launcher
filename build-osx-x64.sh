@@ -33,6 +33,10 @@ build() {
     # Refresh certificate data from the newer aarch64 JRE.
     CERTS_TMPDIR=$(mktemp -d)
     download_jre MAC_AARCH64 mac_aarch64_jre.tar.gz "$CERTS_TMPDIR/jre"
+    keytool -list -keystore $APPBASE/Contents/Resources/jre/lib/security/cacerts -storepass changeit > "$CERTS_TMPDIR/old-cacerts.txt"
+    keytool -list -keystore "$CERTS_TMPDIR/jre/lib/security/cacerts" -storepass changeit > "$CERTS_TMPDIR/new-cacerts.txt"
+    diff -u "$CERTS_TMPDIR/old-cacerts.txt" "$CERTS_TMPDIR/new-cacerts.txt" || [ "$?" -eq 1 ]
+    diff -u $APPBASE/Contents/Resources/jre/lib/security/blocked.certs "$CERTS_TMPDIR/jre/lib/security/blocked.certs" || [ "$?" -eq 1 ]
     cp "$CERTS_TMPDIR/jre/lib/security/cacerts" "$CERTS_TMPDIR/jre/lib/security/blocked.certs" $APPBASE/Contents/Resources/jre/lib/security/
     rm -rf "$CERTS_TMPDIR"
 
