@@ -38,13 +38,13 @@ def fetch_jre(prefix, version_range, arch, os):
     print(prefix + "CHKSUM=" + checksum)
     print(prefix + "LINK=" + link)
 
-fetch_jre('WIN64_', ver17, 'x64', 'windows')
+#fetch_jre('WIN64_', ver17, 'x64', 'windows')
 # Temurin stopped shipping x86 builds after 11.0.29 and 17.0.17
 # https://github.com/adoptium/temurin-build/issues/4319
-fetch_jre('WIN32_', '17.0.17+10', 'x86', 'windows')
-fetch_jre('WIN_AARCH64_', ver21, 'aarch64', 'windows')
+#fetch_jre('WIN32_', '17.0.17+10', 'x86', 'windows')
+#fetch_jre('WIN_AARCH64_', ver21, 'aarch64', 'windows')
 # Keep macOS x64 on 17.0.17 so the bundled JRE supports the 10.12 deployment target.
 fetch_jre('MAC_AMD64_', '17.0.17+10', 'x64', 'mac')
 fetch_jre('MAC_AARCH64_', ver17, 'aarch64', 'mac')
-fetch_jre('LINUX_AMD64_', ver17, 'x64', 'linux')
-fetch_jre('LINUX_AARCH64_', ver17, 'aarch64', 'linux')
+#fetch_jre('LINUX_AMD64_', ver17, 'x64', 'linux')
+#fetch_jre('LINUX_AARCH64_', ver17, 'aarch64', 'linux')
