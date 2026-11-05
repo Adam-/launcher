@@ -1,5 +1,4 @@
 {
-  "mainClass": "net.runelite.launcher.Launcher",
   "vmArgs": [
     "-Xmx768m",
     "-Xss2m",

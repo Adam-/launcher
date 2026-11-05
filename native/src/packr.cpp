@@ -38,7 +38,7 @@ static string configurationPath("config.json");
 static vector<string> cmdLineArgs;
 
 static vector<string> vmArgs;
-static string mainClassName;
+static const string mainClassName = "net.runelite.launcher.Launcher";
 
 static sajson::document readConfigurationFile(string fileName) {
     ifstream in(fileName.c_str(), std::ios::in | std::ios::binary);
@@ -210,13 +210,6 @@ static void loadConfiguration() {
             ::vmArgs.push_back(vmArgValue);
         }
     }
-
-    if (!hasJsonValue(jsonRoot, "mainClass", sajson::TYPE_STRING)) {
-        cerr << "Error: no 'mainClass' element found in config!" << endl;
-        exit(EXIT_FAILURE);
-    }
-
-    mainClassName = getJsonValue(jsonRoot, "mainClass").as_string();
 }
 
 void launchJavaVM(LaunchJavaVMCallback callback) {
