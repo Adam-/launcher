@@ -20,7 +20,7 @@ mkdir -p build/win-aarch64
 
 cp native/build-aarch64/src/Release/RuneLite.exe build/win-aarch64/
 cp build/libs/RuneLite.jar build/win-aarch64/
-cp packr/win-aarch64-config.json build/win-aarch64/config.json
+cp native/config.json build/win-aarch64/config.json
 cp liblauncher/buildaarch64/Release/launcher_aarch64.dll build/win-aarch64/
 
 download_jre WIN_AARCH64 win-aarch64_jre.zip build/win-aarch64/jre

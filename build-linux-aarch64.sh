@@ -24,7 +24,7 @@ chmod 644 build/libs/RuneLite.jar
 
 cp native/build-aarch64/src/RuneLite build/linux-aarch64/
 cp build/libs/RuneLite.jar build/linux-aarch64/
-cp packr/linux-aarch64-config.json build/linux-aarch64/config.json
+cp native/config.json build/linux-aarch64/config.json
 cp build/filtered-resources/runelite.desktop build/linux-aarch64/
 cp appimage/runelite.png build/linux-aarch64/
 mkdir -p build/linux-aarch64/usr/share/icons/hicolor/128x128/apps/

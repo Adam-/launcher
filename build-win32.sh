@@ -20,7 +20,7 @@ mkdir -p build/win-x86
 
 cp native/build-x86/src/Release/RuneLite.exe build/win-x86/
 cp build/libs/RuneLite.jar build/win-x86/
-cp packr/win-x86-config.json build/win-x86/config.json
+cp native/config.json build/win-x86/config.json
 cp liblauncher/build32/Release/launcher_x86.dll build/win-x86/
 
 download_jre WIN32 win32_jre.zip build/win-x86/jre

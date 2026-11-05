@@ -24,7 +24,7 @@ build() {
 
     cp native/build-aarch64/src/RuneLite $APPBASE/Contents/MacOS/
     cp build/libs/RuneLite.jar $APPBASE/Contents/Resources/
-    cp packr/macos-aarch64-config.json $APPBASE/Contents/Resources/config.json
+    cp native/config.json $APPBASE/Contents/Resources/config.json
     cp build/filtered-resources/Info.plist $APPBASE/Contents/
     cp osx/runelite.icns $APPBASE/Contents/Resources/icons.icns
 
