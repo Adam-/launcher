@@ -114,8 +114,10 @@ bool setCmdLineArguments(int argc, char** argv) {
                               {'\0', "cwd", "Sets the working directory.", NULL, dropt_handle_string, &cwd, dropt_attr_optional_val},
                               {'\0', "config", "Specifies the configuration file.", "config.json", dropt_handle_string, &config, dropt_attr_optional_val},
                               {'v', "verbose", "Prints additional information.", NULL, dropt_handle_bool, &_verbose, dropt_attr_optional_val},
-                              {'\0', "console", "Attachs a console window. [Windows only]", NULL, dropt_handle_bool, &_console, dropt_attr_optional_val},
-                              {'J', NULL, "JVM argument", "-Xmx512m", handle_vec_opt, &vmArgs, 0},
+#ifdef _WIN32
+                              {'\0', "console", "Attaches a console window.", NULL, dropt_handle_bool, &_console, dropt_attr_optional_val},
+#endif
+                              {'J', NULL, "JVM argument", "arg", handle_vec_opt, &vmArgs, 0},
                               {0, NULL, NULL, NULL, NULL, NULL, 0}};
 
     dropt_context* droptContext = dropt_new_context(options);
